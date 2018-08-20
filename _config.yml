@@ -12,6 +12,8 @@ navigation:
   url: /index.html
 - text: Schedule
   url: /schedule.html
+- text: Syllabus
+  url: /syllabus.html
 - text: Homework
   url: /homework.html
 - text: Midterm

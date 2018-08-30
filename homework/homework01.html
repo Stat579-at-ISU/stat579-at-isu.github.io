@@ -308,35 +308,30 @@ $(document).ready(function () {
 
 <h1 class="title toc-ignore">Stat 579 - Homework #1</h1>
 <h4 class="author"><em>Your Name</em></h4>
-<h4 class="date"><em>9/6/2018</em></h4>
+<h4 class="date"><em>8/30/2018</em></h4>
 
 </div>
 
 
-<div id="swiss-banknotes" class="section level2">
-<h2>Swiss Banknotes</h2>
+<div id="life-expectancy-1950---1990" class="section level2">
+<h2>Life Expectancy 1950 - 1990</h2>
 <ol style="list-style-type: decimal">
-<li>Download the RMarkdown file with these homework instructions to use as a template for your work. Make sure to replace “Your Name” in the YAML with your name.</li>
-<li>The R package <code>alr3</code> contains a data set called <code>banknote</code>, consisting of (physical) measurements on 200 Swiss bank notes, 100 of which are genuine, while the other half is counterfeit. Load this data set (you might have to install the package) using the code below. Also run the cryptic third line - it will make your life a lot easier for the rest of the homework. This turns variable Y explicitly into a factor variable, i.e. makes it discrete. We will discuss this in the course material later in more detail.</li>
-</ol>
-<pre class="r"><code># install.packages(&quot;alr3&quot;)
-library(alr3) # if this throws an error of the form 'there is no package called alr3', uncomment the line above, run it once, then comment the line out again and run the code chunk again.
-data(banknote)
-banknote$Y &lt;- factor(banknote$Y)</code></pre>
-<ol start="3" style="list-style-type: decimal">
-<li>Use one of our object inspecting functions and interpret the result in the data that you see.</li>
-<li>Use the package <code>ggplot2</code> to draw a barchart of Y (0 is genuine, 1 is counterfeit). Map Y to the fill color of the barchart.</li>
-<li>Use the package <code>ggplot2</code> to draw a histogram of one of the variables in the dataset that shows a distinction between genuine and counterfeit banknotes. Use fill color to show this difference. Choose the binwidth such that there are no gaps in the middle range of the histogram.</li>
-<li>Use the package <code>ggplot2</code> to draw a scatterplot of two (continuous) measurements, color by Y. Try to find a pair of measurements that allow you to separate perfectly between genuine and counterfeit banknotes.</li>
-<li>For each of the three figures above, write a two-three sentence summary, describing the
+<li>Download the RMarkdown file called <code>life-expectancy.csv</code>. You can use that file as a template for your work. Make sure to replace “Your Name” in the YAML with your name.</li>
+<li>Knit the RMarkdown file and read through the corresponding html file. If you encounter errors you are most likely missing some packages that are being used. Either work in the lab or install the packages on your machines. Use the command <code>install.packages(&quot;packagename&quot;)</code>. Make sure to replace <code>packagename</code> by the name of the package you want to install. Beware upper and lwower cases!</li>
+<li>Work through the code in the R markdown file line by line and run it in an R session.</li>
+<li>The file <code>gap7080.csv</code> consists of additional values of average life expectancy for the U.S., Canada and Mexico in the 70s and 80s. Expand the file <code>life-expectancy.Rmd</code> to include values for the 70s and 80s, i.e. you are asked to
 <ol style="list-style-type: lower-alpha">
-<li><strong>structure of the plot</strong>: what type of plot is it? Which variables are mapped to x, to y, and to the (fill) color?</li>
-<li><strong>main message of the plot</strong>: what is your main finding, i.e. what do you want viewers to learn from the plot?</li>
-<li><strong>additional message</strong>: point out anomalies or outliers, if there are any.</li>
+<li>Visualize the life expectancy for the United States, Canada and Mexico in a line chart (with three lines in different colours).</li>
+<li>Comment in your writeup about what you see in the plot. Make sure that the incorrect value for Canada in 1957 is fixed.</li>
 </ol></li>
 </ol>
-<p>Due date: the homework is due a week from now on Thursday.</p>
-<p>For the submission: submit your solution in an R Markdown file and (just for insurance) submit the corresponding html/word file with it.</p>
+<p>Note:</p>
+<ol style="list-style-type: decimal">
+<li>this homework is supposed to be mainly a code reading exercise. You should not have to program extensively. Instead, you have to figure out which pieces you need to copy and adjust.</li>
+<li>the R command for combining two datasets that have the same structure is <code>rbind</code>, used as:</li>
+</ol>
+<pre><code>combined &lt;- rbind(data1, data2)</code></pre>
+<p>For the submission: submit your solution in an R Markdown file and (just for insurance) submit the corresponding html file with it.</p>
 </div>
 
 

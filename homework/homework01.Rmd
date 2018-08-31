@@ -17,7 +17,7 @@ knitr::opts_chunk$set(echo = TRUE)
 
 ## Life Expectancy 1950 - 1990
 
-1. Download the RMarkdown file called `life-expectancy.csv`. You can use that file as a template for your work.
+1. Download the RMarkdown file called [life-expectancy.Rmd](life-expectancy.Rmd). You can use that file as a template for your work.
 Make sure to replace "Your Name" in the YAML with your name.
 2. Knit the RMarkdown file and read through the corresponding html file. If you encounter errors you are most likely missing some packages that are being used. Either work in the lab or install the packages on your machines. Use the command `install.packages("packagename")`. Make sure to replace  `packagename` by the name of the package you want to install. Beware upper and lwower cases!
 3. Work through the code in the R markdown file line by line and run it in an R session. 

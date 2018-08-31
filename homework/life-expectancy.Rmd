@@ -29,7 +29,8 @@ library(tidyverse)
 ## Reading the data 
 
 ```{r}
-life5060 <- read.csv("data/gapminder-5060.csv")
+url <- "https://raw.githubusercontent.com/Stat579-at-ISU/stat579-at-isu.github.io/master/homework/data/gapminder-5060.csv" # nasty looking, but doesn't make any assumptions about data on your machine
+life5060 <- read.csv(url)
 head(life5060)
 ```
 

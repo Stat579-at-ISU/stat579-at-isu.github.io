@@ -19,7 +19,7 @@ knitr::opts_chunk$set(echo = TRUE)
 
 1. Download the RMarkdown file called [life-expectancy.Rmd](life-expectancy.Rmd). You can use that file as a template for your work.
 Make sure to replace "Your Name" in the YAML with your name.
-2. Knit the RMarkdown file and read through the corresponding html file. If you encounter errors you are most likely missing some packages that are being used. Either work in the lab or install the packages on your machines. Use the command `install.packages("packagename")`. Make sure to replace  `packagename` by the name of the package you want to install. Beware upper and lwower cases!
+2. Knit the RMarkdown file and read through the corresponding html file. If you encounter errors you are most likely missing some packages that are being used. Either work in the lab or install the packages on your machines. Use the command `install.packages("packagename")`. Make sure to replace  `packagename` by the name of the package you want to install. Beware upper and lower cases!
 3. Work through the code in the R markdown file line by line and run it in an R session. 
 4. The file `gap7080.csv` consists of additional values of average life expectancy for the U.S., Canada and Mexico in the 70s and 80s.
 Expand the file `life-expectancy.Rmd` to  include values for the 70s and 80s, i.e. you are asked to

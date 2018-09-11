@@ -54,8 +54,11 @@ It turns out, that the following coding scheme is used for HEIGHT3:
 The overall goal is to introduce a new variable `height` that corresponds to reported height in centimeters [cm].
 
 
-6. Introduce a variable `feet` into the data set `iowa` that contains the hundreds and thousands of the `HEIGHT3` variable. Replace values of 77 and above in `feet` by missing value symbol `NA`. How many missing values does the variable `feet` have at this point? Think of the integer division `%/%`.
-7. Introduce a variable `inch` into the data set `iowa` that consists of the last two digits in the variable `HEIGHT3`. Replace all values that are missing in the `feet` variable by missing values in the variable `inch`. Think of the modulo operator `%%`.
+6. Introduce a variable `feet` into the data set `iowa` that contains the hundreds and thousands of the `HEIGHT3` variable. Hint: Think of the integer division `%/%`.<br>
+Replace values of 77 and above in `feet` by missing value symbol `NA`.<br>
+How many missing values does the variable `feet` have at this point? Hint: `?is.na`
+7. Introduce a variable `inch` into the data set `iowa` that consists of the last two digits in the variable `HEIGHT3`. Hint: Think of the modulo operator `%%`.<br>
+Replace all values that are missing in the `feet` variable by missing values in the variable `inch`. 
 8. Introduce a variable `height` in the iowa data that is a conversion of the height values in feet and inch to meters. For your convenience: 1 ft equals 30.48 cm, 1 inch equals 2.54 cm. 1 m equals 100 cm.
 9. Plot a histogram of `height`, facet by gender such that the histograms are on top of each other. Comment on the resulting plot. 
 

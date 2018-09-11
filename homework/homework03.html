@@ -366,8 +366,8 @@ library(tidyverse)</code></pre>
 </table>
 <p>The overall goal is to introduce a new variable <code>height</code> that corresponds to reported height in centimeters [cm].</p>
 <ol start="6" style="list-style-type: decimal">
-<li>Introduce a variable <code>feet</code> into the data set <code>iowa</code> that contains the hundreds and thousands of the <code>HEIGHT3</code> variable. Replace values of 77 and above in <code>feet</code> by missing value symbol <code>NA</code>. How many missing values does the variable <code>feet</code> have at this point? Think of the integer division <code>%/%</code>.</li>
-<li>Introduce a variable <code>inch</code> into the data set <code>iowa</code> that consists of the last two digits in the variable <code>HEIGHT3</code>. Replace all values that are missing in the <code>feet</code> variable by missing values in the variable <code>inch</code>. Think of the modulo operator <code>%%</code>.</li>
+<li>Introduce a variable <code>feet</code> into the data set <code>iowa</code> that contains the hundreds and thousands of the <code>HEIGHT3</code> variable. Hint: Think of the integer division <code>%/%</code>.<br> Replace values of 77 and above in <code>feet</code> by missing value symbol <code>NA</code>.<br> How many missing values does the variable <code>feet</code> have at this point? Hint: <code>?is.na</code></li>
+<li>Introduce a variable <code>inch</code> into the data set <code>iowa</code> that consists of the last two digits in the variable <code>HEIGHT3</code>. Hint: Think of the modulo operator <code>%%</code>.<br> Replace all values that are missing in the <code>feet</code> variable by missing values in the variable <code>inch</code>.</li>
 <li>Introduce a variable <code>height</code> in the iowa data that is a conversion of the height values in feet and inch to meters. For your convenience: 1 ft equals 30.48 cm, 1 inch equals 2.54 cm. 1 m equals 100 cm.</li>
 <li>Plot a histogram of <code>height</code>, facet by gender such that the histograms are on top of each other. Comment on the resulting plot.</li>
 </ol>

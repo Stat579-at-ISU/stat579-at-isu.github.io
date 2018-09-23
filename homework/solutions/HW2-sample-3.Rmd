@@ -1,0 +1,69 @@
+---
+title: "Stat579 HW2"
+date: "September 14, 2018"
+output: html_document
+---
+
+```{r, message = FALSE}
+# install.packages("alr3")
+library(alr3) 
+library(tidyverse)
+data(banknote)
+banknote$Y <- factor(banknote$Y)
+```
+
+
+1. Use one of our object inspecting functions and interpret the result in the data that you see.
+
+```{r}
+summary(banknote)
+```
+
+"Length" cateogry has the highest median compared to other categories, and "bottom" category has the lowest median and largest IQR. Y represents the number of bills in two categories (genuine and counterfeit), and the number of observations are exactly the same for both categories. 
+
+
+
+2. Barchart of Y
+
+```{r}
+ggplot(banknote, aes(Y, fill = Y)) + geom_bar()
+
+```
+
+Structure of the plot: it is a barplot to indicate the number of banknotes in two categories, genuine and counterfeit money. X represents the different categories of banknotes (genuine, counterfeit) and y axis is the number of observations in each category. 
+
+Main message of the plot: Total number of observations is 200, and the counts for each category are exactly the same (100 each).
+
+Additional message: NA
+
+
+
+
+
+3. Histogram of one of the variables in the dataset that shows a distinction between genuine and counterfeit banknotes.
+
+
+```{r}
+ggplot(banknote, aes(Diagonal, fill = Y)) + geom_histogram(binwidth = 0.3)
+```
+
+Structure of the plot: Histrogram. X axis represents the diagonal legnth of each bill and Y axis represent the number of observations in each bin. The histogram is colored by genuine and counterfeit notes.
+
+
+Main message of the plot: genuine notes are concentrated on the right end with a diagnoal length more than 140mm. Based on the plot, we can see that if a banknote has a diagonal length less than 140mm, it is reasonable to conclude that the note is counterfeit. 
+
+Additional message: We have some outliers in the histogram, but not that significant. We have a banknote with a diagonal length less than 140mm, and a counterfeit with a diagonal length more than 140mm.
+
+
+
+
+4.  A scatterplot of two (continuous) measurements, color by Y.
+
+```{r}
+ggplot(banknote, aes(x = Diagonal, y = Top, colour = Y)) + geom_point()
+```
+Structure of the plot: Scatterplot to see the association between two quantitative variables. X axis represents the diagnal legnth of each bill, and Y axis represents the Top margin width of each bill. The scatterplot is colored by genuine and counterfeit notes.
+
+Main message of the plot: we do not see any strong linear association in the plot. However, we can see that genuine notes are more likely to have shorter top margin width with longer diagnoal length.
+
+Additional message: We see couple of outliers in this plot. 

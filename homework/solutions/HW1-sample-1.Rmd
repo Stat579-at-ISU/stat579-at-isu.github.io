@@ -1,0 +1,90 @@
+---
+title: "Stat 579 - Homework 1"
+date: "9/05/2018"
+output: html_document
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE, fig.width=4, fig.height=4)
+library(tidyverse)
+```
+
+# Life Expectancy in Mexico, Canada and the US 
+
+## Step-by-step plan of work
+
+1. Read the data
+2. Focus on values of Canada
+3. Visualize the values for Canada
+4. See whether we can find the problem
+5. ... then we'll see ...
+
+## Reading the data 
+
+```{r}
+url1 <- "https://raw.githubusercontent.com/Stat579-at-ISU/stat579-at-isu.github.io/master/homework/data/gapminder-5060.csv" # nasty looking, but doesn't make any assumptions about data on your machine
+url2 <- "https://raw.githubusercontent.com/Stat579-at-ISU/stat579-at-isu.github.io/master/homework/data/gap7080.csv"
+life5060 <- read.csv(url1)
+life7080 <- read.csv(url2)
+combined <- rbind(life5060, life7080)
+head(combined)
+```
+
+## Focus on the values for Canada
+
+```{r}
+canada <- combined %>% filter(country == "Canada")
+head(canada)
+```
+
+## Visualize 
+
+Draw a line for the life expectancy in Canada:
+```{r}
+canada %>% 
+  ggplot(aes(x = year, y = lifeExp)) +
+  geom_line()
+```
+
+Clearly there is something wrong with the value in 1957.
+
+## Find the problematic value and fix it
+
+```{r}
+canada %>% filter(year == 1957)
+
+canada_fixed <- canada %>% mutate(
+  lifeExp = replace(lifeExp, year==1957, 69.96)  
+)
+```
+
+## visualize the fixed data
+
+```{r}
+canada_fixed %>% ggplot(aes(x = year, y = lifeExp)) +
+  geom_line()
+```
+
+## ... on to the stretch goal ... 
+
+Add lines for Mexico and the US
+
+```{r}
+canada_fixed %>% 
+  ggplot(aes(x = year, y = lifeExp, group=country)) + geom_line() +
+  geom_line(data = combined %>% 
+              filter(country %in% c("United States", "Mexico")))
+```
+
+## ... on to the stretch goal ... 
+
+Add lines for Mexico and the US, color lines by country and add a legend
+
+```{r, fig.width = 6}
+canada_fixed %>% 
+  ggplot(aes(x = year, y = lifeExp, colour=country)) + geom_line() +
+  geom_line(data = combined %>% 
+              filter(country %in% c("United States", "Mexico")))
+
+```
+

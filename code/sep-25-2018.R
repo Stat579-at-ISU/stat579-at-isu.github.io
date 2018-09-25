@@ -11,7 +11,6 @@ mean(a)
 #   group_by(...) %>%
 #   summarize()
 
-
 # --- Your Turn ----------------------------------------------------------------
 
 # Warm up: Your turn (04_logical.html, slide 8)
@@ -75,9 +74,11 @@ which.min(fbi$Count)
 # Use the fbi data object to answer the following questions:
 # how many reports of Burglaries are there for California?
 
+<<<<<<< HEAD
 cali_burglary <- filter(fbi, State == "California") %>%
   filter(Type == "Burglary")
 sum(cali_burglary$Count)
+
 
 # for any of the violent crimes, which state had the highest rate (and for which crime) in 2014? in 1961?
 
@@ -95,6 +96,7 @@ violent_1961[209,]
 
 # Use the fbiwide data object to answer the following question:
 # in how many states in 2011 were there more vehicle thefts than robberies? (which states are those?)
+
 data(fbiwide)
 head(fbiwide)
 

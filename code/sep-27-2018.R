@@ -50,7 +50,8 @@ is.logical(fbi$Violent.crime)
 as.factor(fbi$Year) # Creates factors
 factor(fbi$Year) # same thing
 all.equal(as.factor(fbi$Year), factor(fbi$Year))
-# factor() lets you set levels, labels, and order more easily
+# factor() lets you set levels, labels, 
+# and order more easily
 
 fbi$YearFac <- factor(fbi$Year)
 
@@ -61,7 +62,8 @@ as.numeric(fbi$YearFac) # ???
 
 as.character(fbi$YearFac)
 fbi$YearFac %>% as.character() %>% as.numeric()
-all.equal(fbi$Year, fbi$YearFac %>% as.character() %>% as.numeric())
+all.equal(fbi$Year, 
+          fbi$YearFac %>% as.character() %>% as.numeric())
 
 # ------------------------------------------------------------------------------
 
@@ -87,8 +89,8 @@ factor(fbi$Type,
 
 # Reordering using another variable
 
-reorder(fbi$Type, fbi$Count)
-reorder(fbi$Type, fbi$Count, na.rm = T)
+reorder(fbi$Type, fbi$Count) %>% levels()
+reorder(fbi$Type, fbi$Count, na.rm = T) %>% levels()
 
 # ------------------------------------------------------------------------------
 
@@ -99,14 +101,31 @@ reorder(fbi$Type, fbi$Count, na.rm = T)
 # fbi data. You could use the Ames standard to make values comparable to a
 # city of the size of Ames (population ~70,000).
 
+fbi$rate <- fbi$Count/fbi$Population * 70000
+
 # Plot boxplots of crime rates by different types of crime.
 # How can you make axis text legible?
 
+ggplot(data = fbi, aes(x = TypeSimple, y = rate)) + 
+  geom_boxplot() + 
+  coord_flip()
+
 # Reorder the boxplots of crime rates, such that the boxplots are ordered
 # by their medians.
+fbi$TypeSimple <- reorder(fbi$TypeSimple, fbi$rate, 
+                          median, na.rm = T)
+ggplot(data = fbi, aes(x = TypeSimple, y = rate)) + 
+  geom_boxplot() + 
+  coord_flip()
 
 # For one type of crime (subset!) plot boxplots of rates by state,
 # reorder boxplots by median crime rates
+filter(fbi, TypeSimple == "Car Theft") %>%
+  mutate(State = reorder(State, rate, 
+                              median, na.rm = T)) %>%
+  ggplot(aes(x = State, y = rate)) + 
+  geom_boxplot() + 
+  coord_flip()
 
 # ------------------------------------------------------------------------------
 
@@ -127,6 +146,8 @@ library(ggplot2)
 data(fbi) # Reload - clean copy
 
 ggplot(fbi, aes(x = Type, fill = Year)) + geom_bar() # no color
+
+ggplot(fbi, aes(x = Type, weight = Count, fill = Year)) + geom_bar() # no color
 
 ggplot(fbi, aes(x = Type, fill = factor(Year))) + geom_bar() # colors are fairly meaningless..
 
@@ -149,7 +170,8 @@ ggplot(titanic, aes(x = Age)) + geom_bar()
 ggplot(titanic, aes(x = Sex)) + geom_bar()
 
 # position = 'fill'
-ggplot(titanic, aes(x = Survived, fill = Survived)) +
+
+ggplot(titanic, aes(x = Class, fill = Survived)) +
   geom_bar(position = "fill")
 
 ggplot(titanic, aes(x = Class, fill = Survived)) +
@@ -160,13 +182,18 @@ ggplot(titanic, aes(x = Age, fill = Survived)) +
 
 ggplot(titanic, aes(x = Sex, fill = Survived)) +
   geom_bar(position = "fill")
+ggplot(titanic) +
+  geom_bar(aes(x = Sex, fill = Survived), 
+           position = "fill")
 
 # ------------------------------------------------------------------------------
 
 # --- Two and more factor variables --------------------------------------------
 library(ggmosaic)
 ggplot(data = titanic) +
-  geom_mosaic(aes(x = product(Sex), fill = Survived, weight = 1)) +
+  geom_mosaic(aes(x = product(Sex), 
+                  fill = Survived, 
+                  weight = 1)) +
   facet_grid(Age~Class)
 # ------------------------------------------------------------------------------
 
@@ -177,10 +204,22 @@ ggplot(data = titanic) +
 
 # Draw a barchart of Gender. Interpret.
 
+ggplot(titanic, aes(x = Sex)) + geom_bar()
+
 # Map survival to fill color in the barchart of Gender. Interpret.
+
+ggplot(titanic, aes(x = Sex, fill = Survived)) + geom_bar()
 
 # In the previous barchart change the position parameter to "fill". Interpret.
 
-# Read up on the position parameter in ?geom_bar. Try out other options for position.
+ggplot(titanic, aes(x = Sex, fill = Survived)) + 
+  geom_bar(position = "fill")
 
+# Read up on the position parameter in ?geom_bar. Try out other options for position.
+ggplot(titanic, aes(x = Sex, fill = Survived)) + 
+  geom_bar(position = "stack")
+ggplot(titanic, aes(x = Sex, fill = Survived)) + 
+  geom_bar(position = "dodge")
+ggplot(titanic, aes(x = Sex, fill = Survived)) + 
+  geom_bar(position = "dodge2")
 # ------------------------------------------------------------------------------

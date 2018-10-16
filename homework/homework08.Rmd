@@ -1,0 +1,51 @@
+---
+title: 'Stat 579 - Homework #8'
+author: "Your Name"
+date: "10/24/2018"
+output: html_document
+---
+
+---
+title: 'Stat 579 - Homework #8'
+author: "Your Name"
+date: "10/24/2018"
+output: html_document
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+## Human Development Index
+
+The United Nations Development Programme publishes an annual report on human development across the globe. An interactive tool to visualize some of the data is available at  http://hdr.undp.org/en/data 
+
+
+
+1. Download the RMarkdown file with these homework instructions to use as a template for your work.
+Make sure to replace "Your Name" in the YAML with your name.
+2. Download the data for 2018 from the left side tab  stating [Download all 2018 Human Development data](http://hdr.undp.org/sites/default/files/2018_statistical_annex_all.xlsx). This will lead you to an Excel document. Open it and comment on the structure. 
+Focus on table 2: what problems do you see with the file format? List three problems and explain.
+3. There is an R package available online (on CRAN) that allows to read Excel files. Find the package, (install it if necessary), load it  and try to read the second table of the file "2018_statistical_annex_all.xlsx" into R (make use of the available parameters). Compare the result in R with what is visible in Excel. Keep track of and comment on all steps in the process. 
+For the write-up assume, that the Excel file is in the same folder as the homework Rmd file. Also assume, that both the TA and I have an updated version of the package installed, i.e. only load the package but do not install it in the code.
+4. Introduce names to the data extracted for Table 2.
+5. Use `tidyr` and `dplyr` functionality to get the data set into the following format (Classification of HDI is very high for [0.8,1], high for [0.7, .8), medium for [.55, .7) and low below .55):
+
+```
+  Country     Year    HDI Classification
+  <chr>       <chr> <dbl> <fct>         
+1 Norway      1990  0.850 very high     
+2 Switzerland 1990  0.832 very high     
+3 Australia   1990  0.866 very high     
+4 Ireland     1990  0.763 high          
+5 Germany     1990  0.801 very high     
+6 Iceland     1990  0.802 very high   
+```
+
+6. Use `ggplot` to draw a plot of HDI over time for the US, Norway, Germany, and Canada. 
+
+7. How many countries switched classifications between 2000 and 2017? How many countries went up, how many countries went down?
+
+Due date: please refer to the website and Canvas for the due date. 
+
+For the submission: submit your solution in an R Markdown file and (just for insurance) submit the corresponding html/word file with it. 

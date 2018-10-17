@@ -1,0 +1,45 @@
+---
+title: 'Stat 579 - Homework #7'
+author: "Your Name"
+date: "10/18/2018"
+output: html_document
+---
+
+---
+title: 'Stat 579 - Homework #7'
+author: "Your Name"
+date: "10/18/2018"
+output: html_document
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+## Chick Weights
+
+For this assignment we will use the data set `ChickWeight`. You need to load the data in R using `data(ChickWeight)`.
+The `ChickWeight` data frame has 578 rows and 4 columns from an experiment on the effect of diet on early growth of chicks. Use `?ChickWeight` to get more information on every one of the variables.
+
+1. Download the RMarkdown file with these homework instructions to use as a template for your work.
+Make sure to replace "Your Name" in the YAML with your name.
+
+2.  Each chick should have twelve weight measurements. Use the `dplyr` package to identify how many chicks have a complete set of weight measurements and how many measurements there are in the incomplete cases. Extract a subset of the data for all chicks with complete information and name the data set `complete`. (Hint: you might want to use `mutate` to introduce a helper variable consisting of the number of observations)  
+
+3. In the `complete` data set introduce a new variable that measures the current weight difference compared to day 0. Name this variable `weightgain`.   
+
+4.  Using the `ggplot2` package create  side-by-side boxplots of `weightgain` by `Diet` for day 21. Describe the relationship in 2-3 sentences. 
+Change the order of the categories in the `Diet` variable such that the boxplots are ordered by median `weightgain`.
+
+5. Draw a plot of weight by time. Facet by `Diet`. Use a point layer and also draw one line for each `Chick` (use `geom_line` and specify `group = Chick`). Color by `Diet`.  <br>
+Comment on the plot in  2-3 sentences. 
+
+6. Comment on the two resulting plots below. Which plot best describes the effect of the diets on the chicks?
+  a. Select the  `Chick` with the maximum weight at `Time` 21 for each of the diets. Redraw the previous plot with only these 4 chicks (and don't facet).
+  b. Compute average daily weights under each Diet and redraw the plot (using the same structure and aesthetics as before).<br>
+  
+
+
+Due date: please refer to the website and Canvas for the due date. 
+
+For the submission: submit your solution in an R Markdown file and (just for insurance) submit the corresponding html/word file with it. 

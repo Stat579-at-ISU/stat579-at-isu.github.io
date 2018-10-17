@@ -1,0 +1,180 @@
+---
+title: "Midterm Stat 579 Fall 2013 - Solution"
+output:
+  html_document:
+    fig_height: 6
+    fig_width: 6
+---
+
+### Behavioral Risk Factor Surveillance System
+
+For all of the questions below incorporate  the necessary R code directly into your answers. 
+
+The Behavioral Risk Factor Surveillance System (BRFSS) is an annual survey provided by the Center for Disease Control (CDC) to assess behavioral and chronic diseases. The center surveys six individual-level behavioral health risk factors associated with the leading causes of premature mortality and morbidity among adults: 1) cigarette smoking, 2) alcohol use, 3) physical activity, 4) diet, 5) hypertension, and 6) safety belt use. 
+
+A subset of the data concentrating on Iowa with records for 2012 is given at http://www.hofroe.net/data/iowa-brfss-2012.csv
+
+A codebook describing the survey and a listing of all variables is available at http://www.cdc.gov/brfss/annual_data/2012/pdf/CODEBOOK12_LLCP.pdf.
+You should be able to answer all of the following questions without  the help of the codebook.
+
+1. Read the data into your R session. How many records are in the data set, how many variables?
+
+```{r}
+iowa <- read.csv("http://www.hofroe.net/data/iowa-brfss-2012.csv")
+
+library(ggplot2)
+library(dplyr)
+dim(iowa)
+```
+
+2) The variable 'MARITAL' is coded as 
+1  Married 
+2	Divorced	
+3	Widowed	
+4	Separated	
+5	Never married	
+6	A member of an unmarried couple	
+9	Refused 
+BLANK	Not asked or Missing
+
+Make the variable a factor variable and change the level names  accordingly.
+
+```{r}
+iowa$MARITAL <- factor(iowa$MARITAL)
+levels(iowa$MARITAL) <- c("Married", "Divorced", "Widowed", "Separated", "Never Married", "Couple", NA)
+```
+
+3. Plot boxplots of age (AGE) by marital status (MARITAL). Order categories of MARITAL by increasing median age.
+
+```{r}
+ggplot( data=iowa, 
+        aes(reorder(MARITAL, AGE, na.rm=T), AGE)) + geom_boxplot()
+
+```
+
+4. `HEIGHT3` and `WEIGHT2` are reported height and weight  of survey participants. What would you (roughly) expect for a relationship between the two variables? Draw a scatterplot. Does the result surprise you? Comment.
+
+```{r}
+iowa %>% ggplot(aes(x = HEIGHT3, y = WEIGHT2)) +
+  geom_point()
+
+# there should be a somewhat positive (linear) relationship between height and weight - the picture looks very different
+# the scales on x and y axis do not correspond in any way to values that would make sense for human heights and weights
+```
+
+
+5. It turns out, that the following coding scheme is used for HEIGHT3:
+200 - 711  Height (ft/inches)	
+7777	Don't know/Not sure	
+9000 - 9998	Height (meters/centimeters), where the first 9 indicates that the measurement was metric
+9999	Refused 
+BLANK	Not asked or Missing
+
+Introduce a new variable 'height' into the dataset that corresponds to reported height in centimeters [cm] (i.e. for metric measurements you need to subtract 9000, but for ft/inches you need to do a bit more).
+For your convenience: 1 ft equals 30.48 cm, 1 in equals 2.54 cm. After converting, round to the nearest centimeter.
+Introduce NAs as appropriate.
+
+Using the ggplot2 package, draw a histogram of the resulting variable facetted by gender. Make sure that the histograms are displayed on top of each other. Get rid of all warning messages. Comment on the result.
+
+```{r}
+iowa$height <- NA
+iowa$height[iowa$HEIGHT3 >= 9000] <- iowa$HEIGHT3[iowa$HEIGHT3 >= 9000] - 9000
+iowa$height[iowa$HEIGHT3 == 9999] <- NA
+idx <- which(iowa$HEIGHT3 <= 711)
+iowa$height[idx] <- round(30.48*(iowa$HEIGHT3[idx] %/% 100) + 2.54*(iowa$HEIGHT3[idx] %% 100))
+
+
+iowa %>% ggplot(aes( x = height)) +
+  geom_histogram(binwidth=5) +
+  facet_grid(SEX~.)
+```
+
+6. Seatbelt use (SEATBELT) is captured from 1 - Always, 2- Nearly Always, 3-Sometimes, 4- Seldom, 5-Never, 7-Don't know, 8-Never drive or ride in a car, 9-Refused, to BLANK-Missing.
+
+Which category did respondents pick most often?
+
+Introduce a new variable into the data set that is (in case of a valid answer to SEATBELT) TRUE, if a respondent always wears a seatbelt, and FALSE if not. Deal with missing values appropriately. 
+What percentage of women (SEX = 2) always wear a seatbelt compared to men (SEX = 1)?
+Using ggplot2, draw a plot that corresponds to these percentages.
+
+```{r}
+summary(factor(iowa$SEATBELT)) # 1 with 5960
+
+iowa$alwaysseatbelt <- NA
+iowa$alwaysseatbelt[iowa$SEATBELT == 1] <- TRUE
+iowa$alwaysseatbelt[iowa$SEATBELT %in% 2:5] <- FALSE
+sum(iowa$alwaysseatbelt[iowa$SEX==2] == TRUE, na.rm=TRUE)/sum(iowa$SEX==2)*100
+sum(iowa$alwaysseatbelt[iowa$SEX==1] == TRUE, na.rm=TRUE)/sum(iowa$SEX==1)*100
+
+iowa %>% 
+  ggplot(aes(x = factor(SEX), fill=alwaysseatbelt)) +
+  geom_bar(position="fill")
+```
+
+7) Using ddply, determine the following summary statistics by age and sex:
+- number of respondents
+- percentage of respondents who had at least once too much to drink before driving (DRNKDRI2 is number of times in past 30 days with too much drink before driving)
+- percentage of respondents who did not exercise at all in the past 30 days (EXERANY2 == 2)
+- average number of poor health days in the past 30 days (POORHLTH)
+
+Show two plots: using ggplot2, show the relationship between age and percentage of drink driving, in a separate plot show the relationship between exercise and the number of poor health days. In both plots, incorporate information on the number of respondents and gender. 
+
+Comment on both plots.
+
+```{r}
+library(dplyr)
+dframe <- iowa %>% group_by(AGE, SEX) %>% summarise(
+	n = length(AGE),
+	dui = mean(DRNKDRI2 > 0 & (DRNKDRI2 < 77), na.rm=TRUE)*100,
+	noexer = mean(EXERANY2 == 2, na.rm=TRUE)*100,
+	poor = mean(POORHLTH, na.rm=TRUE)
+)
+
+dframe %>% 
+  ggplot(aes(x = AGE, y =dui,  colour=factor(SEX), size = n)) +
+           geom_point() +
+           facet_grid(~SEX)
+  
+dframe %>% 
+  ggplot(aes(x = noexer, y = poor, 
+             colour=factor(SEX), size = n)) +
+  geom_point() + 
+  geom_smooth(method = "lm") +
+             facet_grid(~SEX)
+# don't forget to write comments 
+```  
+
+
+8. Write a function 'clean' that takes as arguments a vector 'x' and two vectors, 'old' and 'new'. The function is supposed to replace all occurrences of 'old' by their corresponding values in 'new'. Make sure to check that 'old' and 'new' have the same length. Call the following lines to test your function:
+```
+summary(clean(iowa$MENTHLTH, c(88, 77, 99), c(0, NA, NA))) iowa iowa %>% mutate(
+HLTHPLN1 = clean(HLTHPLN1, c(1,2,7,9), c("Yes", "No", NA, NA))
+) %>% count(HLTHPLN1)
+```
+
+```{r}
+clean <- function(x, old, new) {
+  stopifnot(length(old) == length(new))
+  for (i in 1:length(old)) {
+    x <- replace(x, x == old[i], new[i])
+  }
+  x
+}
+
+summary(clean(iowa$MENTHLTH, c(88, 77, 99), c(0, NA, NA)))
+iowa %>% mutate(
+HLTHPLN1 = clean(HLTHPLN1, c(1,2,7,9), c("Yes", "No", NA, NA))
+) %>% count(HLTHPLN1)
+```
+
+9. The function glm in R calculates a generalized linear model. 
+`m1 <- glm(DRNKDRI2 > 0 ~ AGE, data=iowa, family=binomial(logit))`
+This creates an object m1 in your R session. Investigate the object, find out if the object contains an element named 'aic'. Report its value, if it does.
+
+```{r}
+# use function str() on m1:
+m1 <- glm(DRNKDRI2 > 0 ~ AGE, data=iowa, family=binomial(logit))
+str(m1)
+
+m1$aic
+```

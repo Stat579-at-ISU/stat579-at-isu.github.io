@@ -1,0 +1,113 @@
+---
+title: 'Stat 579 - Homework #4'
+date: "9/18/2018"
+output: html_document
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+## Subsets and Visualizations: Movie Mojo
+
+For this homework we are using the data set `mojo` from the classdata package. `mojo` constains data on box office revenue for movies based on the website https://www.boxofficemojo.com .
+
+
+Run the following two commands to install the newest version of the package from github:
+
+```{r, eval = FALSE}
+library(devtools) # error? then run install.packages("devtools")
+devtools::install_github("heike/classdata")
+```
+
+Check what is in the data set:
+```{r}
+library(classdata)
+head(mojo)
+```
+
+1. Download the RMarkdown file with these homework instructions to use as a template for your work.
+Make sure to replace "Your Name" in the YAML with your name.
+
+2. What is the difference between the variables `Week` and `WeekNo`? Describe in your words. 
+```{r}
+summary(mojo)
+```
+
+Week is the No. of the week for a specific movie, starting from the movie release week and ending at movie end week. While WeekNo is the No. of the week in a calendar year. 
+
+3. Use `ggplot2` to plot total gross (`Total Gross`) against week number (`WeekNo`). Facet by Year. Interpret the result. 
+Which movie had the highest total gross over the time frame? How many weeks was that movie on rank 1? How long was it in box offices overall?
+```{r}
+library(ggplot2)
+ggplot(aes(x = WeekNo, y = `Total Gross`), data = mojo) + facet_wrap(~Year) + geom_point()
+
+#Which movie had the highest total gross over the time frame?
+mojo[which.max(mojo$`Total Gross`),]
+
+#How many weeks was that movie on rank 1
+library(dplyr)
+rank1 <- filter(mojo, Title == "Star Wars: The Force Awakens", TW == 1)
+length(unique(rank1$Week))
+#Starup <- filter(mojo, `Total Gross` >= 7.4e+08, Title == "Star Wars: The Force Awakens")
+#Starbelow <- filter(mojo, `Total Gross` < 7.4e+08, Title == "Star Wars: The Force Awakens")
+#max(Starup$Week) - max(Starbelow$Week)
+
+#How long was it in box offices overall?
+StarWars <- filter(mojo, Title == "Star Wars: The Force Awakens")
+max(StarWars$Week)
+```
+
+From the plots, we can find that there is a movie in 2016 has the highest total gross which is above 9.0e+08, 
+It is the Star Wars: The Force Awakens that has the highest total gross. This movie was on rank 1 for 4 weeks, and in the box offices for 24 weeks. 
+
+4. Pick two movies that were in box office some time between 2013 and 2018 and find the corresponding data in the `mojo` data. How does total gross of the two movies compare? Draw a plot and comment on the result. 
+```{r}
+tmp <- filter(mojo, Year %in% c(2013, 2018))
+movie1 <- filter(tmp, Title == "Mile 22")
+movie2 <- filter(tmp, Title == "Incredibles 2")
+movie <- rbind(movie1, movie2)
+ggplot(aes(x = Week, y = `Total Gross`), data = movie) + facet_wrap(~Title) + geom_point()
+```
+
+The total gross of Incredibles 2 is always higher than its of Mile 22 from the beginning to the end.
+
+5. Hit or Flop? The variable `Budget (in Millions)` contains estimated budget numbers for some movies. For how many movies is this information available (careful! trick question - look at what the function `unique` does)? Studios would like to see their budget returned by the opening weekend (first weekend). What is the percentage of movies for which that happened? How many movies did not have their budget matched in total gross by the third weekend?
+For each of these two questions describe your 'plan of attack', i.e. lay out how you go about finding an answer to the question.
+Identify one movie, that did not match its budget by week 3. Plot the incurred loss over time. 
+```{r}
+mojonew = mojo[,colnames(mojo) %in% c("Budget (in Million)", "Title")]
+unique1 <- unique(mojonew) #unique returns a vector, data frame or array like x but with duplicate elements/rows removed.
+unique2 <- unique(na.omit(unique1)) #delete the NA in unique1
+nrow(unique2)
+
+#Studios would like to see their budget returned by the opening weekend (first weekend). What is the percentage of movies for which that happened?
+mojo2 <- filter(mojo, `Total Gross` >= `Budget (in Million)`*1000000, Week == 1)
+unique3 <- unique(na.omit(unique(mojo2[,colnames(mojo2) %in% c("Budget (in Million)", "Title")])))
+nrow(unique3)
+
+Week1 <- filter(mojo, Week == 1)
+Week1new = Week1[,colnames(mojo) %in% c("Budget (in Million)", "Title")]
+unique_week1 <- unique(Week1new)
+unique3_week1 <- unique(na.omit(unique_week1))
+nrow(unique3)/ nrow(unique3_week1)
+
+#How many movies did not have their budget matched in total gross by the third weekend?
+mojo3 <- filter(mojo, `Total Gross` < `Budget (in Million)`*1000000, Week == 3)
+unique4 <- unique(na.omit(unique(mojo3[,colnames(mojo3) %in% c("Budget (in Million)", "Title")])))
+nrow(unique4)
+
+#Plot the incurred loss over time.
+mojo$loss <- (- mojo$`Total Gross` + mojo$`Budget (in Million)`*1000000)
+Baywatch <- filter(mojo, Title == "Baywatch")
+ggplot(Baywatch, aes(x=Week, y=loss)) + geom_point()
+```
+
+There are 658 movies has the budget number information. 
+
+In order to know how many movies get their budget returned by the opening weekend, I first calculate the number of movies has the Week 1 information by using "filter" under the condition of Week = 1 and "unique" on the combined columns of Budget and Title since different movies could have the same budget. Next, I calculate the total number of movies under the condition that the total gross for the first week is no less than the budget and the week is 1, using the same approach. By taking the ratio of these two numbers, I  find 17.46032% of movies can have budget returned by the opening weekend. 
+
+For the second problem, I filter the dataset mojo with the condition that the total gross is less than the budget and the week is 3. Then I use the unique function to eliminate all the estimated budget since we cannot guarantee their budget. It turn out that there are 320 movies that did not meet the budget by the third weekend.
+
+There are two things that we need to be careful with. The first one is we need to remove the NA values by using unique(na.omit), since unique function cannot delete the NA directly. The second is that we need to multiply 1000000 with the Budget. 
+

@@ -1,0 +1,125 @@
+---
+title: 'Stat 579 - Homework #3'
+date: "9/13/2018"
+output: html_document
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+## Behavioral Risk Factor Surveillance System
+
+The Behavioral Risk Factor Surveillance System (BRFSS) is an annual survey provided by the Center for Disease Control (CDC) to assess behavioral and chronic diseases. The center surveys six individual-level behavioral health risk factors associated with the leading causes of premature mortality and morbidity among adults: 1) cigarette smoking, 2) alcohol use, 3) physical activity, 4) diet, 5) hypertension, and 6) safety belt use.  A subset of the data concentrating on Iowa with records for 2012 is given at [http://www.hofroe.net/data/iowa-brfss-2012.csv]() The following code reads the data into your R session: A codebook describing the survey and a listing of all variables is available at [http://www.cdc.gov/brfss/annual_data/2012/pdf/CODEBOOK12_LLCP.pdf](). You should be able to answer all of the following questions without  the help of the codebook.For each of the questions, show the code necessary to retrieve the answer. Make sure to also write the answer to the question in a sentence.
+
+
+**1.** Download the RMarkdown file with these homework instructions to use as a template for your work.
+Make sure to replace "Your Name" in the YAML with your name.
+
+**2.** Load the dataset into your session and store it in the object `iowa`.
+
+```{r, cache = TRUE, warning = FALSE}
+iowa <- read.csv("http://www.hofroe.net/data/iowa-brfss-2012.csv")
+```
+
+```{r}
+library(tidyverse)
+library(magrittr)
+library(mosaic)
+```
+
+**3.** How many rows does that data set have, how many columns? Which types of variables does the data set have? 
+```{r}
+dim(iowa)
+iowa %>%
+  sapply(class) %>%
+  unique
+```
+
+The iowa data set includes 7166 observations with 359 variables, that is 7166 rows with 359 columns. These variables consitst of integer, factor, numeric, and logical variables. 
+
+**4.** Use `ggplot2` to draw a scatterplot of height (`HEIGHT3`) and weight (`WEIGHT2`), facet by gender (`SEX`). State your expectation regarding the relationship between the variables, comment on the plot you see.
+
+```{r}
+iowa$SEX <- replace(iowa$SEX, iowa$SEX == 1, "Male") %>% replace(iowa$SEX == 2, "Female")
+library(ggplot2)
+```
+
+```{r}
+iowa %>%
+  ggplot(aes(x=HEIGHT3, y= WEIGHT2, colour=SEX))+geom_point()+ facet_wrap(~SEX)
+```
+
+EXPECTATION: I expect to see a linear relationship between weight and height for both male and females. I assume that there will be some deviations but over all, I expect to see a somewhat strong positive linear relationship. The difference between men and female I think will be just that men are larger the majority of the time. 
+WHAT WE SEE: When you look at this graph initially you see that there are clusters of near the left corner for each gender with a range of outlers in both genders in the corners. This graph is really difficult to read because the outliers are so far away from the cluster of data that is the most interesting. It also does not really make sense, as a human shouldnt weigh over 2000lbs. 
+
+**5.** Temporarily restrict weight and height to below 2500, then plot the values again. Describe the plot you see.
+```{r}
+iowashi<-filter(iowa, iowa$HEIGHT3<2500)
+iowawh<-filter(iowashi, WEIGHT2<2500)
+iowawh %>%
+  ggplot(aes(x=HEIGHT3, y= WEIGHT2))+geom_point()+ facet_wrap(~SEX)
+```
+
+Now when we look at the plot, we see that 3 verticles lines at 400, 500, and 600 when it comes to height There still does not seem to be a very good representation of height and weight. There still seems to be something wrong with the way the data is written. 
+
+
+
+It turns out, that the following coding scheme is used for HEIGHT3:
+
+| HEIGHT3 value  |  Interpretation    |
+|:- |:- |
+| 200 - 711 | Height (ft/inches), i.e. 410 is 4 feet, 10 inches	|
+| 7777 |	Don't know/Not sure	|
+| 9000 - 9998 |	Height (meters/centimeters), where the first 9 indicates that the measurement was metric, 9165 is 1 meter 65 cm |
+| 9999	| Refused |
+| BLANK |	Not asked or Missing |
+
+
+The overall goal is to introduce a new variable `height` that corresponds to reported height in centimeters [cm].
+
+**6.** Introduce a variable `feet` into the data set `iowa` that contains the hundreds and thousands of the `HEIGHT3` variable. Hint: Think of the integer division `%/%`.<br>
+Replace values of 77 and above in `feet` by missing value symbol `NA`.<br>
+How many missing values does the variable `feet` have at this point? Hint: `?is.na`
+
+```{r}
+iowa<-iowa%>%
+  mutate(feet=HEIGHT3%/%100)%>%
+  mutate(feet= ifelse(feet>=77, NA,feet))
+```
+
+```{r}
+tally(iowa$feet)
+```
+There are 94 missing values in this data frame.
+
+**7.** Introduce a variable `inch` into the data set `iowa` that consists of the last two digits in the variable `HEIGHT3`. Hint: Think of the modulo operator `%%`.<br>
+Replace all values that are missing in the `feet` variable by missing values in the variable `inch`. 
+```{r}
+iowa<-iowa%>%
+  mutate(inch=HEIGHT3%%100)%>%
+  mutate(inch= ifelse(is.na(feet), NA,inch))
+```
+
+**8.** Introduce a variable `height` in the iowa data that is a conversion of the height values in feet and inch to meters. For your convenience: 1 ft equals 30.48 cm, 1 inch equals 2.54 cm. 1 m equals 100 cm.
+
+```{r}
+iowa<-iowa%>%
+  mutate(height=(feet*30.48+inch*2.54)/100)%>%
+  #adding back in meter heights
+  mutate(height=ifelse(HEIGHT3%/%100> 89 & HEIGHT3%/%100 <99, (HEIGHT3-9000)/100, height))
+```
+
+**9.** Plot a histogram of `height`, facet by gender such that the histograms are on top of each other. Comment on the resulting plot.
+
+```{r}
+iowa %>%
+  mutate(SEX=as.factor(SEX))%>%
+  ggplot(aes(x= height, fill=SEX))+ geom_histogram(binwidth = 0.05)+ facet_wrap(~SEX, ncol = 1)
+```
+
+From the plot above we see that both are pretty normally distributed, the male height is a little larger then the female hight. Both of the distributions have about the same range. From putting the distributions on top of each other to see how male and female are in relation to each other. 
+
+Due date: the homework is due a week from now on Thursday. 
+
+For the submission: submit your solution in an R Markdown file and (just for insurance) submit the corresponding html/word file with it. 

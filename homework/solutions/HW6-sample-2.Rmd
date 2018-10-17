@@ -1,0 +1,138 @@
+---
+title: 'Stat 579 - Homework #6'
+date: "10/11/2018"
+output: html_document
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+## Another look at the Behavioral Risk Factor Surveillance System 
+
+We are, again, using the data from the Behavioral Risk Factor Surveillance System (BRFSS). Just as a reminder, the BRFSS surveys six individual-level behavioral health risk factors associated with the leading causes of premature mortality and morbidity among adults: 1) cigarette smoking, 2) alcohol use, 3) physical activity, 4) diet, 5) hypertension, and 6) safety belt use. 
+
+A subset of the data concentrating on Iowa with records for 2012 is given at [http://www.hofroe.net/data/iowa-brfss-2012.csv]()
+
+The following code reads the data into your R session:
+```{r, cache = TRUE, warning = FALSE}
+iowa <- read.csv("http://www.hofroe.net/data/iowa-brfss-2012.csv")
+library(tidyverse)
+```
+
+For each of the questions, show the code necessary to retrieve the answer. 
+Make sure to also write the answer to the question in a sentence.
+
+2. Load the dataset into your session and store it in the object `iowa`.
+
+3. Check the codebook for an explanation of the variable `DRNKDRI2`. Do a frequency breakdown of the variable `DRNKDRI2` (visually or numerically). Comment.
+
+```{r}
+library(dplyr)
+iowa%>%
+  group_by(DRNKDRI2)%>%
+  summarise(count=n())
+
+# or
+library(data.table)
+dt=data.table(iowa)
+freq=dt[, .N, by=DRNKDRI2]
+freq
+```
+
+Introduce a variable `drinkdrive` into the `iowa` data set that encodes 88 as 0, and 77 and 99 as `NA`. <br>
+Hint: a combination of `mutate` and `ifelse` might be helpful. <br>
+```{r}
+a=iowa %>%
+  mutate(drinkdrive=ifelse(DRNKDRI2==88, 0, ifelse(DRNKDRI2==77|DRNKDRI2==99, NA, DRNKDRI2)))
+   
+# or
+
+iowa$drinkdrive=ifelse(iowa$DRNKDRI2==88, 0, ifelse(iowa$DRNKDRI2==77|iowa$DRNKDRI2==99, NA, iowa$DRNKDRI2))
+```
+
+Find the following summaries:
+  
+    a. What is the average number of times respondents admitted to driving under the influence in the past 30 days?
+```{r}
+d <- mean(iowa$drinkdrive, na.rm = T)
+d
+```
+   
+    b. On how many reports is this average based (exclude missing values)?
+```{r}
+f <- iowa %>%
+  group_by(drinkdrive) %>%
+  summarise(count=n(), na.rm=T)
+f
+sum(f$count)-3458
+```
+    
+    c. Is there a difference in this average between the genders? Is that difference significant? 
+    
+  yes. from the table below we can see there has significant difference in average between gender.
+```{r}
+iowa%>%
+  group_by(SEX)%>%
+  summarise(mu=mean(drinkdrive, na.rm = T))
+```
+
+    
+
+4. Current smoking status is imputed in the variable `X_SMOKER3` (corresponds to variable `_SMOKER3` in the codebook). Make `X_SMOKER3` a factor.  Relabel levels 1, 2, 3, 4 to `Current Smoker`, `Current Smoker`, `Former Smoker` and `Never Smoked` (yes, `Current Smoker` is repeated on purpose) and level 9 to NA.
+```{r}
+
+iowa$X_SMOKER33=factor(iowa$X_SMOKER3)
+levels(iowa$X_SMOKER33)=c("Current Smoker", "Current Smoker", "Former Smoker", "Never Smoked", "NA")
+
+```
+
+    b. Describe the relationship between smoking status and age (use `X_AGE_G` - read up on `_AGE_G` in the codebook) based on an appropriate visualization. 
+    
+  from the plot we can see that when people are young or very old, they are more likely to smoke than in the middle age on average.
+```{r}
+library(ggplot2)
+ggplot(iowa, aes(X_SMOKER33))+
+  geom_bar(aes(fill=factor(X_AGE_G)), position="fill")
+# or
+iowa%>%
+  group_by(X_AGE_G)%>%
+  summarise(meansmoker=mean(X_SMOKER3))%>%
+  ggplot(aes(X_AGE_G, meansmoker))+
+  geom_point()
+
+```
+
+5. What percentage of the population has never smoked? Calculate this percentage by age groups (`X_AGE_G`) and gender (`SEX`). 
+```{r}
+iowa %>%
+  group_by(SEX, X_AGE_G) %>%
+  summarise(totalsmoke3=sum(X_SMOKER33!="NA"), precentage=sum(X_SMOKER33 == "Never Smoked", na.rm = T)/totalsmoke3)
+
+```
+
+    b. Report also on the number of respondents these percentages are based on.
+```{r}
+iowa%>%
+   filter(X_SMOKER33!="NA")%>%
+  group_by(SEX, X_AGE_G)%>%
+  summarise(count=n())
+
+```
+
+
+6. Self assessed health status is used as an indicator in a lot of health andn insurance models. Read up on variable `POORHLTH` in the codebook and recode levels to 'meaningful' numbers (similar to question 3). 
+```{r}
+iowa$POORHLTHnew=ifelse(iowa$POORHLTH==88, 0, ifelse(iowa$POORHLTH==77|iowa$POORHLTH==99|iowa$POORHLTH=="", NA, iowa$POORHLTH))
+```
+
+    b. What is the relationship between age and the number of  poor health days? Is this relationship    different for men and women? Show plot(s) and describe.
+    
+ from the plot we can see that in the same age, women's health condtion will worse than men. And as the age grown, people's health will become more and more worse.
+```{r}
+iowa %>%
+  group_by(X_AGE_G, SEX)%>%
+  summarise(poolhealth=mean(POORHLTHnew, na.rm = T) )%>%
+  ggplot(aes(X_AGE_G, poolhealth )) + geom_point(aes(colour=factor(SEX)))
+```
+

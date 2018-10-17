@@ -1,0 +1,125 @@
+---
+title: 'Stat 579 - Homework #3'
+date: "9/20/2018"
+output: html_document
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+## Behavioral Risk Factor Surveillance System
+
+The Behavioral Risk Factor Surveillance System (BRFSS) is an annual survey provided by the Center for Disease Control (CDC) to assess behavioral and chronic diseases. The center surveys six individual-level behavioral health risk factors associated with the leading causes of premature mortality and morbidity among adults: 1) cigarette smoking, 2) alcohol use, 3) physical activity, 4) diet, 5) hypertension, and 6) safety belt use. 
+
+A subset of the data concentrating on Iowa with records for 2012 is given at [http://www.hofroe.net/data/iowa-brfss-2012.csv]()
+
+1. Load the dataset into your session and store it in the object `iowa`.
+```{r, warning = FALSE}
+iowa <- read.csv("http://www.hofroe.net/data/iowa-brfss-2012.csv")
+IOWA = iowa #To keep the original data
+library(tidyverse)
+```
+
+A codebook describing the survey and a listing of all variables is available at [http://www.cdc.gov/brfss/annual_data/2012/pdf/CODEBOOK12_LLCP.pdf]().
+You should be able to answer all of the following questions without  the help of the codebook.
+
+For each of the questions, show the code necessary to retrieve the answer. 
+Make sure to also write the answer to the question in a sentence.
+
+2. How many rows does that data set have, how many columns? Which types of variables does the data set have? 
+
+```{r}
+(Row=dim(iowa)[1]); (Col=dim(iowa)[2])
+
+Variable.Type = function(data, nofvar){
+  type = c()
+  for (j in 1:nofvar) type=c(type, typeof(iowa[,j]))
+  table(type)
+}
+Variable.Type(iowa, Col)
+```
+    
+    The dataset consists of `r Row` rows and `r Col` columns, and the types of all variables in the data are double, integer, and logical.
+
+3. Use `ggplot2` to draw a scatterplot of height (`HEIGHT3`) and weight (`WEIGHT2`), facet by gender (`SEX`). State your expectation regarding the relationship between the variables, comment on the plot you see.
+```{r}
+sex.levels <- c(`1` = "Male (coded as 1)", `2` = "Female (coded as 2)")
+iowa %>% ggplot(aes(x=HEIGHT3, y=WEIGHT2)) + geom_point() + facet_grid(. ~ SEX, labeller = as_labeller(sex.levels))
+```
+
+    I guessed a roughly positive association between height and weight in each sex group, but it seems that the values of both height and weight are clustered near 0 except for some points. Moreover, the values of two variables range from 0 to 10000 which departs from our common sense no matter what unit was applied.
+
+4. Temporarily restrict weight and height to below 2500, then plot the values again. Describe the plot you see.
+
+```{r}
+sex.levels <- c(`1` = "Male (coded as 1)", `2` = "Female (coded as 2)")
+iowa %>% filter(HEIGHT3 < 2500 & WEIGHT2 <2500) %>%
+  ggplot(aes(x=HEIGHT3, y=WEIGHT2)) + geom_point() + facet_grid(. ~ SEX, labeller = as_labeller(sex.levels))
+```
+
+    It looks that there is a certain rule to code the values of height and weight. Assuming that the larger values mean taller height and heavier weight, it seems that  there is a slightly positive relationship between height and weight in both groups. However, the coded values are still not clear for me to understand until now.
+
+It turns out, that the following coding scheme is used for HEIGHT3:
+
+| HEIGHT3 value  |  Interpretation    |
+|:- |:- |
+| 200 - 711 | Height (ft/inches), i.e. 410 is 4 feet, 10 inches	|
+| 7777 |	Don't know/Not sure	|
+| 9000 - 9998 |	Height (meters/centimeters), where the first 9 indicates that the measurement was metric, 9165 is 1 meter 65 cm |
+| 9999	| Refused |
+| BLANK |	Not asked or Missing |
+
+The overall goal is to introduce a new variable `height` that corresponds to reported height in centimeters [cm].
+
+
+5. Introduce a variable `feet` into the data set `iowa` that contains the hundreds and thousands of the `HEIGHT3` variable. Hint: Think of the integer division `%/%`.<br>
+Replace values of 77 and above in `feet` by missing value symbol `NA`.<br>
+How many missing values does the variable `feet` have at this point? Hint: `?is.na`
+
+```{r}
+###To check if there is an observation not classifed into the coded range -> There is no BLANK, and looks no problem in coding
+iowa %>% mutate(check=if_else(200 <= HEIGHT3 & HEIGHT3 <= 711, 1, if_else(
+                             711 < HEIGHT3 & HEIGHT3 < 7777, 9, if_else(
+                                   HEIGHT3 == 7777, 2, if_else(
+                             7777 < HEIGHT3 & HEIGHT3 < 9000, 99, if_else(
+                             9000 <= HEIGHT3 & HEIGHT3 <= 9998, 3, if_else(
+                             9998 < HEIGHT3 & HEIGHT3 < 9999, 999, if_else(
+                                   HEIGHT3 == 9999, 4, 9999)))))))) %>% 
+  group_by(check) %>% summarise(Count = n()) %>% mutate(total=sum(Count))
+iowa=IOWA
+iowa <- iowa %>%
+  mutate(feet = if_else(HEIGHT3%/%100 < 77, HEIGHT3%/%100, 101),
+         feet = na_if(feet, 101))
+
+iowa %>% group_by(is.na(feet)) %>% summarise(Count = n())
+
+```
+
+    The number of missing values in `feet` is 94 (= 51+21+22) which matches the number of values not recorded as ft/inches or nonresponse.
+
+6. Introduce a variable `inch` into the data set `iowa` that consists of the last two digits in the variable `HEIGHT3`. Hint: Think of the modulo operator `%%`.<br>
+Replace all values that are missing in the `feet` variable by missing values in the variable `inch`. 
+
+```{r}
+iowa <- iowa %>% mutate(inch = if_else(is.na(feet)==FALSE, HEIGHT3%%100, 101),
+                        inch = na_if(inch, 101))
+```
+
+7. Introduce a variable `height` in the iowa data that is a conversion of the height values in feet and inch to meters. For your convenience: 1 ft equals 30.48 cm, 1 inch equals 2.54 cm. 1 m equals 100 cm.
+
+```{r}
+iowa <-iowa %>% mutate(height = if_else(is.na(feet)==FALSE, (30.48*feet + 2.54*inch) / 100, if_else(
+                                      9000 <= HEIGHT3 & HEIGHT3 <= 9998, (HEIGHT3 - 9000) / 100, 10000)),
+                     height = na_if(height, 10000))
+```
+
+    I used meters instead of cm because this question is asking meters although height was supposed to be represented by cm ealier.
+
+8. Plot a histogram of `height`, facet by gender such that the histograms are on top of each other. Comment on the resulting plot. 
+
+```{r}
+iowa %>% ggplot(aes(x = height)) + geom_histogram() + facet_grid(SEX ~ ., labeller = as_labeller(sex.levels)) + labs(x = "Height (meters)")
+```
+
+    Surprisingly, it appears that the shapes of the distributions of height (in meters) by sex are quite similar except that the height of males tends to be higher than one of females on average.

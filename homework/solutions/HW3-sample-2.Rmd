@@ -1,0 +1,107 @@
+---
+title: 'Stat 579 - Homework #3'
+date: "9/13/2018"
+output: html_document
+---
+
+```{r setup, include= FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+## Behavioral Risk Factor Surveillance System
+
+The Behavioral Risk Factor Surveillance System (BRFSS) is an annual survey provided by the Center for Disease Control (CDC) to assess behavioral and chronic diseases. The center surveys six individual-level behavioral health risk factors associated with the leading causes of premature mortality and morbidity among adults: 1) cigarette smoking, 2) alcohol use, 3) physical activity, 4) diet, 5) hypertension, and 6) safety belt use. 
+
+A subset of the data concentrating on Iowa with records for 2012 is given at [http://www.hofroe.net/data/iowa-brfss-2012.csv]()
+
+The following code reads the data into your R session:
+```{r, cache = TRUE, warning = FALSE}
+iowa <- read.csv("http://www.hofroe.net/data/iowa-brfss-2012.csv")
+library(tidyverse)
+```
+
+#Q3. How many rows does that data set have, how many columns? Which types of variables does the data set have? 
+
+```{r}
+library(tidyverse)
+dim(iowa)
+
+```
+```{r, results = F}
+str(iowa, list.len = 400)
+```
+
+There are 7166 rows and 359 columns. The type of variables are num, int, factor, logi (lots of NAs here), and this is shown by the function "str" whose output is too long and be hided here.
+
+#Q4. Use `ggplot2` to draw a scatterplot of height (`HEIGHT3`) and weight (`WEIGHT2`), facet by gender (`SEX`). State your expectation regarding the relationship between the variables, comment on the plot you see.
+
+```{r}
+iowa %>%
+  ggplot(aes(x = HEIGHT3, y = WEIGHT2)) +
+  geom_point() + facet_wrap(~ SEX)
+```
+
+Due to the coding scheme of "HEIGHT3" and unknown coding scheme of "WEIGHT2", these two plots are quite strange. There are a lot of points in the bottom left which means these "HEIGHT3" of the points are measured by "feet and inch", other points have "HEIGHT3" measured by "meters and "centimeters". The points having "HEIFHT3" = 7777 or 9999 are missing values.
+
+#5. Temporarily restrict weight and height to below 2500, then plot the values again. Describe the plot you see.
+
+```{r}
+iowa %>%
+  ggplot(aes(x = HEIGHT3, y = WEIGHT2)) +
+  geom_point() + facet_wrap(~ SEX) + 
+  xlim(NA, 2500) + ylim(NA, 2500)
+```
+
+When I restricted the wight and height to below 2500, the points are still clustered in the bottom left around "HEIGHT3" = 500. And the points are highly overlaped and roughly shown three lines in "SEX" = 2, and two lines in "SEX" = 1.
+
+#6. Introduce a variable `feet` into the data set `iowa` that contains the hundreds and thousands of the `HEIGHT3` variable. Hint: Think of the integer division `%/%`.<br>
+Replace values of 77 and above in `feet` by missing value symbol `NA`.<br>
+How many missing values does the variable `feet` have at this point? Hint: `?is.na`
+
+```{r}
+iowa %>%
+  mutate(feet = HEIGHT3 %/% 100) %>%
+  within({feet[feet >= 77] <- NA}) -> iowa
+
+iowa %>%
+  select(feet) %>%
+  is.na() %>%
+  sum()
+```
+
+The renewed data set is still called iowa. And there are 94 missing values in "feet" now.
+
+#7. Introduce a variable `inch` into the data set `iowa` that consists of the last two digits in the variable `HEIGHT3`. Hint: Think of the modulo operator `%%`.<br>
+Replace all values that are missing in the `feet` variable by missing values in the variable `inch`. 
+
+```{r}
+iowa %>%
+  mutate(inch = HEIGHT3 %% 100) %>%
+  within({inch[feet == NA] <- NA}) -> iowa
+```
+
+The renewed data set is still called iowa.
+
+#8. Introduce a variable `height` in the iowa data that is a conversion of the height values in feet and inch to meters. For your convenience: 1 ft equals 30.48 cm, 1 inch equals 2.54 cm. 1 m equals 100 cm.
+
+```{r}
+iowa %>%
+  mutate(height = feet*30.48/100 + inch*2.54/100) %>%
+  within(height[HEIGHT3 > 7777 & HEIGHT3 <9999] <- 
+           HEIGHT3[ HEIGHT3 > 7777 & 
+                      HEIGHT3 <9999] %% 1000 /100) ->
+  iowa
+```
+
+The renewed data set is still called iowa.
+
+#9. Plot a histogram of `height`, facet by gender such that the histograms are on top of each other. Comment on the resulting plot. 
+
+```{r}
+iowa %>%
+  ggplot(aes(height)) + geom_histogram(bins = 20) +
+  facet_wrap(~ SEX, ncol = 1)+
+  scale_x_continuous(breaks = seq(1.2, 2.4, by = 0.1))
+```
+
+The "bins" is chosen to be 20. The histogram for "SEX" = 1 (perhaps this is male), has mode 1.85 counting nearly 900, and that of "SEX" = 2 (perhaps this is female) has mode 1.65 counting nearly 1200. It is clear that "SEX 1" are higher than "SEX 2" in mode, average or medium. And very few of the individuls have exetreme heights shown in the ends of the histograms.

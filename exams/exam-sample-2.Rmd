@@ -1,0 +1,70 @@
+---
+title: "Stat 480: Sample Exam"
+date: "4/10/2018"
+output: html_document
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+The United States Geological Survey continuously monitors earth quakes and makes the corresponding data available to the public. 
+A dataset containing all worldwide earth quakes  for a time frame of 30 days is available at <a href="http://www.hofroe.net/data/earthquakes.csv">http://www.hofroe.net/data/earthquakes.csv</a>.
+
+You can find the accompanying codebook at <a href="http://earthquake.usgs.gov/earthquakes/feed/v1.0/csv.php">US Geology Survey</a> (you should be able to answer all questions in this exam without the codebook). 
+
+1. Load the data into R. What is the time frame under consideration? How many earthquakes were there?
+When and where was the strongest earthquake? What was its magnitude?
+
+```{r}
+# place the code for your answer here
+```
+
+2. The variable 'Country' contains country names or states (in the case of the US). California is listed both as 'CA' and as 'California'. Convert all elements in the variable from 'CA' to "California'. 
+
+```{r}
+# place the code for your answer here
+```
+
+3. Which countries/states had the most earthquakes? List the top five. <br>
+Using ggplot2, create a barchart of country, sort by frequency of earthquakes. 	<br>
+Make sure that labels are readable in the barchart.
+
+```{r}
+# place the code for your answer here
+```
+
+4. Create a new variable 'Country10' in the earthquake data that contains the country names  for the  ten countries/states with the highest number of earthquakes, and combines all other records in a category 'Other'. <br>
+Show (using the ggplot2 package) boxplots of magnitude by country. Make sure to sort countries from lowest to highest median magnitude.
+
+```{r}
+# place the code for your answer here
+```
+
+5.	Draw a histogram of magnitude of earthquakes - make sure to not get a warning message.
+	Describe the shape of the density. <br>
+	Use the histogram to pick a suitable cutoff between 'small' and 'large' earthquakes. 
+```{r}
+# place the code for your answer here
+```
+
+6. Load the `maps` package and extract a world map (hint: think of `map_data`). Plot the world map using a polygon layer. Set the fill color to `grey50`.
+Add a layer of points to the map showing the locations of earthquakes use color to distinguish between small and large earthquakes.
+
+Describe what you see.
+
+```{r}
+# place the code for your answer here
+```
+
+7. Using dplyr, determine for each date
+
+- the number of earthquakes, 
+- their average magnitude, 
+- the name of the country/state in which most of them happened that day. 
+
+  Based on the summary data, draw a single chart that incorporates all of the above information.
+
+```{r}
+# place the code for your answer here
+```

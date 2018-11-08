@@ -1,0 +1,39 @@
+---
+title: 'Stat 579 - Homework #9 - Extra Credit'
+author: "Your Name"
+date: "11/13/2018"
+output: html_document
+---
+
+---
+title: 'Stat 579 - Homework #9 - Extra Credit'
+author: "Your Name"
+date: "11/13/2018"
+output: html_document
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+## Choropleth maps
+
+This homework is for extra credit. 
+
+Since 1972 the General Social Survey (GSS) is conducted every two years by the National Opinion Research Center (NORC).
+The survey allows insight into developing trends across dozens of different topics. 
+
+
+1. Download the RMarkdown file with these homework instructions to use as a template for your work.
+Make sure to replace "Your Name" in the YAML with your name.
+2. Download the GSS subset from the [link provided](data/gss.rds) and place it next to your R markdown file, so that you can read the data in with the command 
+```
+gss <- readRDS("gss.rds")
+```
+3. The R package `ggmapr` is available on github from repo `heike/ggmapr`. Install the package. Part of the package is a data set called `division`, consisting of the Census Bureau divisions. Use the division data to draw a map (using `ggplot2`).
+4. In the gss data, Census Bureau divisions are called `REGION`. Describe the steps necessary to create a choropleth map for Census Bureau divisions filled by the average age that respondents had their first child (`AGEKDBRN`).  
+5. Create choropleth maps for 2016 and 1972 (by gender, if you want) and comment.
+
+Due date: please refer to the website and Canvas for the due date. 
+
+For the submission: submit your solution in an R Markdown file and (just for insurance) submit the corresponding html/word file with it. 

@@ -1,0 +1,34 @@
+---
+title: 'Stat 579 - Homework #10 - Extra Credit'
+author: "Your Name"
+date: "11/27/2018"
+output: html_document
+---
+
+---
+title: 'Stat 579 - Homework #10 - Extra Credit'
+author: "Your Name"
+date: "11/27/2018"
+output: html_document
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+## Midterm revisited
+
+This homework is for 10 points of extra credit. 
+
+1. Download the zipped folder with the material for your exam. 
+
+    a. Unzip the folder (extract all), 
+    b. double-click the R project contained in the folder. 
+    c. In RStudio, open the R markdown file.
+
+2. Answer all the questions provided in the exam. Use the comments provided to improve on your answers.
+
+
+Due date: please refer to the website and Canvas for the due date. 
+
+For the submission: submit your solution in an R Markdown file and (just for insurance) submit the corresponding html/word file with it. 

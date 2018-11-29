@@ -1,0 +1,77 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+    <meta name="description" content="Stat 579: Introduction to Statistical Computing at Iowa State University.">
+    <meta name="author" content="Heike Hofmann <hofmann@iastate.edu>">
+    <!-- By The original uploader was Dick107 at English Wikipedia [GFDL (http://www.gnu.org/copyleft/fdl.html) or CC-BY-SA-3.0 (http://creativecommons.org/licenses/by-sa/3.0/)], via Wikimedia Commons https://commons.wikimedia.org/wiki/File%3APunch-card-5081.jpg-->
+
+    <title>Stat 579</title>
+
+    <!-- Bootstrap core CSS -->
+    <link href="../../../css/bootstrap.min.css" rel="stylesheet">
+    <link href="../../../css/extra.css" rel="stylesheet">
+
+  </head>
+
+  <body>
+
+    <div class="container">
+
+      <!-- Static navbar -->
+      <nav class="navbar navbar-default">
+        <div class="container-fluid">
+          <div class="navbar-header">
+            <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#navbar" aria-expanded="false" aria-controls="navbar">
+              <span class="sr-only">Toggle navigation</span>
+              <span class="icon-bar"></span>
+              <span class="icon-bar"></span>
+              <span class="icon-bar"></span>
+            </button>
+            <a class="navbar-brand" href="../../../index.html">Stat 579</a>
+          </div>
+          <div id="navbar" class="navbar-collapse collapse">
+            <ul class="nav navbar-nav">
+              
+              
+            </ul>
+            <ul class="nav navbar-nav navbar-right">
+              <li><a href="http://canvas.iastate.edu" target="_blank">Canvas</a></li>
+            </ul>
+          </div><!--/.nav-collapse -->
+        </div><!--/.container-fluid -->
+      </nav>
+
+    <div class="post">
+
+  <header class="post-header">
+    <h1 class="post-title">Insights from Visualizing the NYPD Motor Vehicle Collision Data</h1>
+    <p class="post-meta"> • Yawei Ge, Ying Zheng, Zirou Zhou, Ziwei Zhou</p>
+  </header>
+
+  <article class="post-content">
+    <p>Road safety issues are critical and relevant to people’s everyday life. As reported by US Department of Transportation, in 2010 alone, “there were 32,999 people killed, 3.9 million were injured, and 24 million vehicles were damaged in motor vehicle crashes in the United States”, which lead to an annual economic cost of vehicle collision is $242 billion dollars (equivalent to $836 billion total value of societal harm) (Blincoe, Miller, Zaloshnja, &amp; Lawrence, 2015). Therefore, it is important to “use scientific methods and data-driven decisions to reduce the number and severity of crashes on our roadways” (Federal Highway Administration, 2018). In 2011, NYC Council passed Local Law #11, which motivated the data collection of every collision in NYC by location and injury by NYPD. This project focuses on the “Motor Vehicle Collisions” dataset, which is made publically available from the NYC Open Data website. In the data set, each record represents a collision in NYC by city, borough, precinct, and cross street. The primary purpose of the project is to apply exploratory data analysis and visualization techniques to discover hidden patterns of the occurrences of vehicle collisions in NYC as related to time, location, and contributing factors. Specially, this project focuses on the following research questions:</p>
+
+<p>1)	What are the patterns of the total number of vehicle collision for the five boroughs in NYC by years, months, week days, and hours in a day? 
+2)	Can we identify the locations in NYC that are most dangerous?
+3)	What are the common causes of accidents?
+4)	How can we summarize the findings on animated maps? What deeper insights can we gain from animated maps?</p>
+
+<p>The above research questions are addressed by making use of a variety of data science tool, especially data visualization, implemented in R. Preliminary results indicate the boroughs that have highest number of collisions are Brooklyn, Manhattan, and Queens. From Year 2012 to 2018, there is a general increasing trend of the number of collisions up until 2015, from which the total number start to decrease. The number of collision also increase from January up until October, then the number begin to decrease. During a typical week, there are more accidents on Friday and less on Sunday. During a day, the number peaks at 16:00 - 17:00 pm and a drastic increase of collision can be seen from 8:00 - 9:00 am. Analysis of locations reveal that the 17218 accidents occurred in the area with zip code, followed by 13734 accidents with zip code 11101.  In addition, while the majority of the causes for vehicle collision is noted as unspecified, the most common cause points to driver inattention. Finally, using the “gganimate” package, it is found that while the number of accidents changes from time to time, the distribution of the accidents is quite stable. Moreover, the number of injuries and the number of deaths are linear related. In year 2017, Manhattan has a much higher death/injuries rate compared with other Boroughs. And it increased dramatically in October, which may be related to some severe accidents.</p>
+
+
+  </article>
+
+</div>
+
+
+    </div> <!-- /container -->
+
+
+    <!-- Bootstrap core JavaScript
+    ================================================== -->
+    <!-- Placed at the end of the document so the pages load faster -->
+    <script src="../../../scripts/jquery.min.js"></script>
+    <script src="../../../scripts/bootstrap.min.js"></script>
+  </body>
+</html>

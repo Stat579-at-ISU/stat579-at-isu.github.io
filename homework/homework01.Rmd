@@ -1,13 +1,13 @@
 ---
 title: 'Stat 579 - Homework #1'
 author: "Your Name"
-date: "8/30/2018"
+date: "9/03/2019"
 output: html_document
 ---
 ---
 title: 'Stat 579 - Homework #1'
 author: "Your Name"
-date: "8/30/2018"
+date: "9/03/2019"
 output: html_document
 ---
 

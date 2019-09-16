@@ -433,12 +433,21 @@ library(tidyverse)</code></pre>
 </tr>
 </tbody>
 </table>
-<p>The overall goal is to introduce a new variable <code>height</code> that corresponds to reported height in centimeters [cm].</p>
 <ol start="6" style="list-style-type: decimal">
-<li>Introduce a variable <code>feet</code> into the data set <code>iowa</code> that contains the hundreds and thousands of the <code>HEIGHT3</code> variable. Hint: Think of the integer division <code>%/%</code> and use <code>mutate</code>.<br> Replace values of 77 and above in <code>feet</code> by missing value symbol <code>NA</code>.<br> How many missing values does the variable <code>feet</code> have at this point? Hint: <code>?is.na</code></li>
-<li>Introduce a variable <code>inch</code> into the data set <code>iowa</code> that consists of the last two digits in the variable <code>HEIGHT3</code>. Hint: Think of the modulo operator <code>%%</code>.<br> Replace all values that are missing in the <code>feet</code> variable by missing values in the variable <code>inch</code>.</li>
-<li>Introduce a variable <code>height</code> in the iowa data that is a conversion of the height values in feet and inch to meters. For your convenience: 1 ft equals 30.48 cm, 1 inch equals 2.54 cm. 1 m equals 100 cm.</li>
-<li>Plot a histogram of <code>height</code>, facet by gender such that the histograms are on top of each other. Choose an appropriate bin width and comment on the resulting plot.</li>
+<li>Use a combination of <code>filter</code> and logical expressions to answer the following questions:</li>
+</ol>
+<ol style="list-style-type: lower-alpha">
+<li>What proportion of the height measurements are taken in metric measurements?</li>
+<li>What is the range of (standard) height measurements for men, what is the range of (standard) height measurements for women? Draw histograms of (standard) height, facet by gender. Make sure to choose an appropriate bin width. Comment on the histograms and your choice of bin width.</li>
+<li>How many missing values (?<code>is.na</code>) does the variable HEIGHT3 have?</li>
+</ol>
+<ol start="7" style="list-style-type: decimal">
+<li>Fact finding - you might have to make use of the <a href="https://www.cdc.gov/brfss/annual_data/2017/pdf/codebook17_llcp-v2-508.pdf">codebook</a> to answer the following questions, if you use the codebook, please include this in a comment in your answer. For all answers, include the code you used to get to the answer.</li>
+</ol>
+<ol style="list-style-type: lower-alpha">
+<li>What is the mode of the number of adults (<code>NUMADULT</code>) in a household in Iowa in 2017?</li>
+<li><code>EDUCA</code> is the variable containing the highest grade or year of school completed. Is the percentage of college graduates in Iowa higher or lower than the nation’s average (based on the BRFSS sample)?</li>
+<li>Out of the people asked, what percentage of people got their flu shot (<code>FLSHTMY2</code>) in July 2017 or after?</li>
 </ol>
 <p>Due date: the homework is due a week from now on Thursday.</p>
 <p>For the submission: submit your solution in an R Markdown file and (just for insurance) submit the corresponding html/word file with it.</p>

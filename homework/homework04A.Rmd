@@ -1,0 +1,71 @@
+---
+title: 'Stat 579 - Homework #4 - Section A'
+author: "Your Name"
+date: "9/26/2019"
+output: html_document
+---
+
+---
+title: 'Stat 579 - Homework #4 - Section A'
+author: "Your Name"
+date: "9/26/2019"
+output: html_document
+---
+
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+## Behavioral Risk Factor Surveillance System - Again
+
+We are again looking at the data from the
+Behavioral Risk Factor Surveillance System (BRFSS).
+
+A subset of the data concentrating on Iowa with records for 2016 is given at
+```{r}
+url <- "https://raw.githubusercontent.com/Stat579-at-ISU/stat579-at-isu.github.io/master/homework/data/brfss-iowa-2018.csv"
+```
+
+The following code reads the data into your R session:
+```{r, cache = TRUE, warning = FALSE}
+iowa <- read.csv(url)
+library(tidyverse)
+```
+
+A codebook describing the survey and a listing of all variables is available at [https://www.cdc.gov/brfss/annual_data/2017/pdf/codebook17_llcp-v2-508.pdf]().
+
+For each of the questions, show the code necessary to get to the answer. 
+Make sure to also write the answer to the question in a sentence.
+
+1. Download the RMarkdown file with these homework instructions to use as a template for your work.
+Make sure to replace "Your Name" in the YAML with your name.
+2. Load the dataset into your session and store it in the object `iowa`.
+
+As already seen in the last homework, the coding scheme used for HEIGHT3 is:
+
+| HEIGHT3 value  |  Interpretation    |
+|:- |:- |
+| 200 - 711 | Height (ft/inches), i.e. 410 is 4 feet, 10 inches	|
+| 7777 |	Don't know/Not sure	|
+| 9000 - 9998 |	Height (meters/centimeters), where the first 9 indicates that the measurement was metric, 9165 is 1 meter 65 cm |
+| 9999	| Refused |
+| BLANK |	Not asked or Missing |
+
+The overall goal is to introduce a new variable `height` that corresponds to reported height in centimeters [cm].
+
+3. Sketch out a way to derive a new variable `height` that represents the values in `HEIGHT3` in centimeters and properly encodes any unavailable information as missing values (`NA`).
+Implement your transformation. For your convenience: 1 ft equals 30.48 cm, 1 inch equals 2.54 cm. 1 m equals 100 cm.
+
+4. How  many missing values does the variable `height` have? 
+5. What is the average height among respondents of the survey? among men? among women? Does the result make sense? Comment.
+
+
+6. Plot a histogram of `height`, facet by gender such that the histograms are on top of each other. Choose an appropriate bin width and comment on the resulting plot. 
+7. The variable `WTKG3` has measurements of weight in 10s of grams (i.e. `WTKG3` divided by 100 gives the weight in kilogram). 
+
+8. Use `ggplot2` to draw a scatterplot of weight (`WTKG3`) by height (new `height` variable). Facet by gender and comment.
+
+Due date: the homework is due a week from now on Thursday. 
+
+For the submission: submit your solution in an R Markdown file and (just for insurance) submit the corresponding html/word file with it. 

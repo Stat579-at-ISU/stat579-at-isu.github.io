@@ -20,7 +20,7 @@ knitr::opts_chunk$set(echo = TRUE)
 
 The Behavioral Risk Factor Surveillance System (BRFSS) is an annual survey provided by the Center for Disease Control (CDC) to assess behavioral and chronic diseases. The center surveys six individual-level behavioral health risk factors associated with the leading causes of premature mortality and morbidity among adults: 1) cigarette smoking, 2) alcohol use, 3) physical activity, 4) diet, 5) hypertension, and 6) safety belt use. 
 
-A subset of the data concentrating on Iowa with records for 2012 is given at
+A subset of the data concentrating on Iowa with records for 2018 is given at
 ```{r}
 url <- "https://raw.githubusercontent.com/Stat579-at-ISU/stat579-at-isu.github.io/master/homework/data/brfss-iowa-2018.csv"
 ```

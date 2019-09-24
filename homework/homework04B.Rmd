@@ -61,7 +61,7 @@ It turns out, that the following coding scheme is used for HEIGHT3:
 
 7. Fact finding - you might have to make use of the [codebook](https://www.cdc.gov/brfss/annual_data/2017/pdf/codebook17_llcp-v2-508.pdf) to answer the following questions, if you use the codebook, please include this in a comment in your answer. For all answers, include the code you used to get to the answer.
 
-  a. What is the mode of the number of adults (`NUMADULT`) in a household in Iowa in 2017?
+  a. What is the mode of the number of adults (`NUMADULT`) in a household in Iowa in 2018?
   b. `EDUCA` is the variable containing the highest grade or year of school completed. Is the percentage of college graduates in Iowa higher or lower than the nation's average (based on the BRFSS sample)? 
   c. Out of the people asked, what percentage of people got their flu shot (`FLSHTMY2`)  in July 2017 or after?
     

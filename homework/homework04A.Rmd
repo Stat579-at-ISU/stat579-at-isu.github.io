@@ -22,7 +22,7 @@ knitr::opts_chunk$set(echo = TRUE)
 We are again looking at the data from the
 Behavioral Risk Factor Surveillance System (BRFSS).
 
-A subset of the data concentrating on Iowa with records for 2016 is given at
+A subset of the data concentrating on Iowa with records for 2018 is given at
 ```{r}
 url <- "https://raw.githubusercontent.com/Stat579-at-ISU/stat579-at-isu.github.io/master/homework/data/brfss-iowa-2018.csv"
 ```

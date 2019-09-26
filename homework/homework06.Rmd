@@ -1,14 +1,14 @@
 ---
-title: 'Stat 579 - Homework #6'
+title: 'Stat 579 - Homework #6 - Section A'
 author: "Your Name"
-date: "10/11/2018"
+date: "10/3/2018"
 output: html_document
 ---
 
 ---
-title: 'Stat 579 - Homework #6'
+title: 'Stat 579 - Homework #6 - Section A'
 author: "Your Name"
-date: "10/11/2018"
+date: "10/3/2018"
 output: html_document
 ---
 
@@ -20,15 +20,19 @@ knitr::opts_chunk$set(echo = TRUE)
 
 We are, again, using the data from the Behavioral Risk Factor Surveillance System (BRFSS). Just as a reminder, the BRFSS surveys six individual-level behavioral health risk factors associated with the leading causes of premature mortality and morbidity among adults: 1) cigarette smoking, 2) alcohol use, 3) physical activity, 4) diet, 5) hypertension, and 6) safety belt use. 
 
-A subset of the data concentrating on Iowa with records for 2012 is given at [http://www.hofroe.net/data/iowa-brfss-2012.csv]()
+A subset of the data concentrating on Iowa with records for 2018 is given at
+```{r, message = FALSE, warning = FALSE}
+library(tidyverse)
+url <- "https://raw.githubusercontent.com/Stat579-at-ISU/stat579-at-isu.github.io/master/homework/data/brfss-iowa-2018.csv"
+```
 
 The following code reads the data into your R session:
 ```{r, cache = TRUE, warning = FALSE}
-iowa <- read.csv("http://www.hofroe.net/data/iowa-brfss-2012.csv")
-library(tidyverse)
+iowa <- read.csv(url)
 ```
 
-A codebook describing the survey and a listing of all variables is available at [http://www.cdc.gov/brfss/annual_data/2012/pdf/CODEBOOK12_LLCP.pdf]().
+
+A codebook describing the survey and a listing of all variables is available at https://www.cdc.gov/brfss/annual_data/2017/pdf/codebook17_llcp-v2-508.pdf.
 
 For each of the questions, show the code necessary to retrieve the answer. 
 Make sure to also write the answer to the question in a sentence.
@@ -36,22 +40,22 @@ Make sure to also write the answer to the question in a sentence.
 1. Download the RMarkdown file with these homework instructions to use as a template for your work.
 Make sure to replace "Your Name" in the YAML with your name.
 2. Load the dataset into your session and store it in the object `iowa`.
-3. Check the codebook for an explanation of the variable `DRNKDRI2`. Do a frequency breakdown of the variable `DRNKDRI2` (visually or numerically). Comment.
-Introduce a variable `drinkdrive` into the `iowa` data set that encodes 88 as 0, and 77 and 99 as `NA`. <br>
-Hint: a combination of `mutate` and `ifelse` might be helpful. <br>
+3. Check the codebook for an explanation of the variable `DRNK3GE5`. Do a frequency breakdown of the variable `DRNK3GE5` (visually or numerically). Comment.
+Introduce a variable `bingedays` into the `iowa` data set that encodes 88 as 0, and 77 and 99 as `NA`. <br>
+<!--Hint: a combination of `mutate` and `ifelse` might be helpful. <br>-->
 Find the following summaries:
   
-    a. What is the average number of times respondents admitted to driving under the influence in the past 30 days?
+    a. What is the average number of times respondents admitted to binge drinking in the past 30 days?
     b. On how many reports is this average based (exclude missing values)?
     c. Is there a difference in this average between the genders? Is that difference significant? 
 
 4. Current smoking status is imputed in the variable `X_SMOKER3` (corresponds to variable `_SMOKER3` in the codebook). Make `X_SMOKER3` a factor.  Relabel levels 1, 2, 3, 4 to `Current Smoker`, `Current Smoker`, `Former Smoker` and `Never Smoked` (yes, `Current Smoker` is repeated on purpose) and level 9 to NA.
 Describe the relationship between smoking status and age (use `X_AGE_G` - read up on `_AGE_G` in the codebook) based on an appropriate visualization. 
 
-5. What percentage of the population has never smoked? Calculate this percentage by age groups (`X_AGE_G`) and gender (`SEX`). Report also on the number of respondents these percentages are based on.
+5. What percentage of the population has never smoked? Calculate this percentage by age groups (`X_AGE_G`) and gender (`SEX1`). Report also on the number of respondents these percentages are based on (exclude any missing values).
 
-6. Self assessed health status is used as an indicator in a lot of health andn insurance models. Read up on variable `POORHLTH` in the codebook and recode levels to 'meaningful' numbers (similar to question 3). 
-What is the relationship between age and the number of  poor health days? Is this relationship different for men and women? Show plot(s) and describe.
+6. Self assessed health status is used as an indicator in a lot of health and insurance models. Read up on variable `POORHLTH` in the codebook and recode levels to 'meaningful' numbers (similar to question 3). 
+What is the relationship between age and the number of  poor health days? Is this relationship different for men and women (`SEX1`)? Show plot(s) and describe.
 
 Due date: please refer to the website and Canvas for the due date. 
 

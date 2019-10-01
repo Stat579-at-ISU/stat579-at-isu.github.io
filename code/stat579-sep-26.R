@@ -73,4 +73,48 @@ titanic %>%
   theme_bw()
 
 ################
+library(classdata)
+head(fbiwide)
+names(fbiwide)
+
+fbiwide %>% select(Aggravated.assault:Robbery) %>% head()
+
+fbiwide %>% select(5:12) %>% head()
+
+fbiwide %>% select(names(fbiwide)[5:12]) %>% head()
+
+fbiwide %>% select(one_of(names(fbiwide)[5:12])) %>% head()
+
+fbiwide %>% select(-(1:4)) %>% head()
+
+fbiwide %>% select(-1:-4) %>% head()
+
+#####
+head(happy)
+
+str(happy)
+
+happy %>% ggplot(aes(x = happy)) + geom_bar()
+levels(happy$happy)
+happy <- happy %>% mutate(
+  nhappy = as.numeric(happy)
+)
+
+happy %>%
+  summarize(
+    mean_happy = mean(nhappy, na.rm=T)
+  )
+
+happy %>%
+  group_by(age, sex) %>%
+  summarize(
+    mean_happy = mean(nhappy, na.rm=T)
+  ) %>%
+  ggplot(aes(x = age, y = mean_happy, colour=sex)) +
+  geom_point()
+
+
+
+
+
 

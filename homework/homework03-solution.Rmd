@@ -1,0 +1,174 @@
+---
+title: 'Stat 579 - Homework #3 - Section A'
+author: "Your Name"
+date: "9/19/2019"
+output: html_document
+---
+
+---
+title: 'Stat 579 - Homework #3 - Section A'
+author: "Your Name"
+date: "9/19/2019"
+output: html_document
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+## Behavioral Risk Factor Surveillance System
+
+The Behavioral Risk Factor Surveillance System (BRFSS) is an annual survey provided by the Center for Disease Control (CDC) to assess behavioral and chronic diseases. The center surveys six individual-level behavioral health risk factors associated with the leading causes of premature mortality and morbidity among adults: 1) cigarette smoking, 2) alcohol use, 3) physical activity, 4) diet, 5) hypertension, and 6) safety belt use. 
+
+A subset of the data concentrating on Iowa with records for 2018 is given at
+```{r}
+url <- "https://raw.githubusercontent.com/Stat579-at-ISU/stat579-at-isu.github.io/master/homework/data/brfss-iowa-2018.csv"
+```
+
+The following code reads the data into your R session:
+```{r, cache = TRUE, warning = FALSE}
+iowa <- read.csv(url)
+```
+
+A codebook describing the survey and a listing of all variables is available at [https://www.cdc.gov/brfss/annual_data/2017/pdf/codebook17_llcp-v2-508.pdf]().
+
+For each of the questions, show the code necessary to get to the answer. 
+Make sure to also write the answer to the question in a sentence.
+
+1. Download the RMarkdown file with these homework instructions to use as a template for your work.
+Make sure to replace "Your Name" in the YAML with your name.
+2. Load the dataset into your session and store it in the object `iowa`.
+
+```
+as long as they don't change any of the code above, there's really nothing for them to do.
+
+-1 for any local file names or broken links
+```
+3. How many rows does that data set have, how many columns? Which types of variables does the data set have? 
+
+```{r}
+library(tidyverse)
+
+nrow(iowa) # number of rows
+ncol(iowa) # number of columns
+# if they use dim(iowa), I'd like an explanation of which is which, other -0.5
+
+str(iowa) # mostly integer variables
+```
+
+4. Use `ggplot2` to draw a scatterplot of height (`HEIGHT3`) and weight (`WEIGHT2`), facet by gender (`SEX1`). State your expectation regarding the relationship between the variables, comment on the plot you see.
+
+```{r}
+# expectation: there should be some positive correlation between height and weight, i.e. the taller somebody is the more they weigh on average
+# missing expectation -1.5
+# unrealistic expectation -1 to -2 depending on how unrealistic it is. 
+# -2 for people who say that the plot meets their expectation
+
+iowa %>% 
+  ggplot(aes(x = HEIGHT3, y = WEIGHT2)) +
+  geom_point() +
+  facet_grid(.~SEX1)
+
+# missing comment: -1
+# comment can include genders 7 and 9
+# comment should include weight/height relationship/axes values ....
+```
+5. Temporarily restrict weight and height to below 2500, then plot the values again. Describe the plot you see.
+
+```{r}
+iowa %>% 
+  filter(HEIGHT3 < 2500, WEIGHT2 < 2500) %>%
+  ggplot(aes(x = HEIGHT3, y = WEIGHT2)) +
+  geom_point() +
+  facet_grid(.~SEX1)
+
+# missing comment -1
+# stripes on height come from encoding with feet and inch
+
+```
+
+It turns out, that the following coding scheme is used for HEIGHT3:
+
+| HEIGHT3 value  |  Interpretation    |
+|:- |:- |
+| 200 - 711 | Height (ft/inches), i.e. 410 is 4 feet, 10 inches	|
+| 7777 |	Don't know/Not sure	|
+| 9000 - 9998 |	Height (meters/centimeters), where the first 9 indicates that the measurement was metric, 9165 is 1 meter 65 cm |
+| 9999	| Refused |
+| BLANK |	Not asked or Missing |
+
+6. Use a combination of `filter` and logical expressions to answer the following questions:
+```
+for all of these questions we have code/answer, 
+-1 if one of them is missing
+```
+  a. What proportion of the height measurements are taken in metric measurements? 
+
+```{r}
+metric <- iowa %>%
+  filter(HEIGHT3 > 9000, HEIGHT3 < 9999)
+nrow(metric)/nrow(iowa) * 100
+# 0.85%, i.e. less than one percent is reported in metric values 
+```
+  b. What is the range of (standard) height measurements for men, what is the range of (standard) height measurements for women? Draw histograms of (standard) height, facet by gender. Make sure to choose an appropriate bin width. Comment on the histograms and your choice of bin width.
+  
+```{r}
+men <- iowa %>% filter(HEIGHT3 < 7777, SEX1 ==1)
+women <- iowa %>% filter(HEIGHT3 < 7777, SEX1 ==2)
+summary(men$HEIGHT3) # range men: 3' to 6' 10"
+summary(women$HEIGHT3) # range women 4' 2" to 6' 8"
+```
+  c. How many missing values (?`is.na`) does the variable HEIGHT3 have?
+```{r}
+summary(is.na(iowa$HEIGHT3))
+# 133 missing values 
+```
+
+7. Fact finding - you might have to make use of the [codebook](https://www.cdc.gov/brfss/annual_data/2017/pdf/codebook17_llcp-v2-508.pdf) to answer the following questions, if you use the codebook, please include this in a comment in your answer. For all answers, include the code you used to get to the answer.
+
+```
+# again, this section is a code/answer section
+# 1 pt for the code
+# .5 pt for the answer
+```
+
+  a. What is the mode of the number of adults (`NUMADULT`) in a household in Iowa in 2017?
+  
+```{r}
+iowa %>% 
+  ggplot(aes(x = NUMADULT)) + geom_bar()
+# households with 2 adults are the mode
+```
+  b. `EDUCA` is the variable containing the highest grade or year of school completed. Is the percentage of college graduates in Iowa higher or lower than the nation's average (based on the BRFSS sample)? 
+  
+```{r}
+# from codebook
+# a value of 6 stands for college graduates
+# in the full sample this has a percentage of 37.42 (also from the codebook)
+
+college <- iowa %>% filter(EDUCA == 6)
+nrow(college)/nrow(iowa)*100
+# the percentage of college graduates in Iowa is about 5 percentage points lower than the national average in the BRFSS sample.
+```
+  c. Out of the people asked, what percentage of people got their flu shot (`FLSHTMY2`)  in July 2017 or after?
+    
+```{r}
+# from the codebook: encoding is of the form MMYYYY where
+# MM is the month in up to two digits and YYYY is the year in # four digits
+
+flushot <- iowa %>% filter(!is.na(FLSHTMY2))
+nrow(flushot) # 3899 Iowans were asked about their flushot
+
+summary(flushot$FLSHTMY2) # 12017 is minimum
+# are there people with flu shots in 2016?
+flushot %>% filter(FLSHTMY2 %in% c("102016", "112016", "122016")) %>% dim() # no, nobody
+
+beforeJuly17 <- flushot %>% 
+  filter(FLSHTMY2 %in% c("12017", "22017", "32017",
+                         "42017", "52017", "62017"))
+1-nrow(beforeJuly17)/nrow(flushot)                     # 99.7% of people got their flushot in July or later         
+```
+
+Due date: the homework is due a week from now on Thursday. 
+
+For the submission: submit your solution in an R Markdown file and (just for insurance) submit the corresponding html/word file with it. 

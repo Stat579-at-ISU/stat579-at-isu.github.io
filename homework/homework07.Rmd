@@ -1,14 +1,14 @@
 ---
-title: 'Stat 579 - Homework #7'
+title: 'Stat 579 - Homework #6'
 author: "Your Name"
-date: "10/18/2018"
+date: "10/10/2019"
 output: html_document
 ---
 
 ---
-title: 'Stat 579 - Homework #7'
+title: 'Stat 579 - Homework #6'
 author: "Your Name"
-date: "10/18/2018"
+date: "10/10/2019"
 output: html_document
 ---
 
@@ -18,9 +18,10 @@ knitr::opts_chunk$set(echo = TRUE)
 
 ## Star Wars
 
-1. Download the RMarkdown file with these homework instructions to use as a template for your work.
-Make sure to replace "Your Name" in the YAML with your name.
-2. We are back to a survey collected by FiveThirtyEight. This time we are interested in a survey on Star Wars - the accompanying article is published [here](https://fivethirtyeight.com/features/americas-favorite-star-wars-movies-and-least-favorite-characters/)
+FiveThirtyEight is a website founded by Statistician and writer Nate Silver to publish results from  opinion poll analysis, politics, economics, and sports blogging. 
+One of the featured articles discusses [popularity of movies in the Star Wars Franchise](https://fivethirtyeight.com/features/americas-favorite-star-wars-movies-and-least-favorite-characters/)
+
+This article is based on a survey collected by FiveThirtyEight and publicly available on github. Use the code below to read in the data from the survey:
 
 ```{r, message=FALSE, warning=FALSE}
 library(dplyr)
@@ -39,6 +40,11 @@ names(starwars) <- enc2native(stringi::stri_trans_general(varnames, "latin-ascii
 starwars <- starwars[-1,]
 head(starwars)
 ```
+
+
+
+1. Download the RMarkdown file with these homework instructions to use as a template for your work.
+Make sure to replace "Your Name" in the YAML with your name.
 
 3. How many people responded to the survey? How many people have seen at least one of the movies? Use the variable `Have you seen any of the 6 films in the Star Wars franchise? Response` to answer this question. Only consider responses of participants who have seen at least one of the Star Wars films for the remainder of the homework.
 4. Variables `Gender Response` and `Age Response` are two of the demographic variables collected. Use `dplyr` to provide a frequency break down for each variable. Does the result surprise you? Comment. Reorder the levels in the variable `Age Response` from youngest to oldest.

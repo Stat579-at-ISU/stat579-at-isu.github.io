@@ -11,7 +11,7 @@
 
 <meta name="author" content="Your Name" />
 
-<meta name="date" content="2018-10-18" />
+<meta name="date" content="2018-10-10" />
 
 <title>Stat 579 - Homework #7</title>
 
@@ -256,9 +256,7 @@ h6 {
 </style>
 
 
-</head>
 
-<body>
 
 <style type="text/css">
 .main-container {
@@ -283,22 +281,92 @@ img {
 button.code-folding-btn:focus {
   outline: none;
 }
+summary {
+  display: list-item;
+}
 </style>
 
 
 
-<div class="container-fluid main-container">
-
 <!-- tabsets -->
+
+<style type="text/css">
+.tabset-dropdown > .nav-tabs {
+  display: inline-table;
+  max-height: 500px;
+  min-height: 44px;
+  overflow-y: auto;
+  background: white;
+  border: 1px solid #ddd;
+  border-radius: 4px;
+}
+
+.tabset-dropdown > .nav-tabs > li.active:before {
+  content: "";
+  font-family: 'Glyphicons Halflings';
+  display: inline-block;
+  padding: 10px;
+  border-right: 1px solid #ddd;
+}
+
+.tabset-dropdown > .nav-tabs.nav-tabs-open > li.active:before {
+  content: "";
+  border: none;
+}
+
+.tabset-dropdown > .nav-tabs.nav-tabs-open:before {
+  content: "";
+  font-family: 'Glyphicons Halflings';
+  display: inline-block;
+  padding: 10px;
+  border-right: 1px solid #ddd;
+}
+
+.tabset-dropdown > .nav-tabs > li.active {
+  display: block;
+}
+
+.tabset-dropdown > .nav-tabs > li > a,
+.tabset-dropdown > .nav-tabs > li > a:focus,
+.tabset-dropdown > .nav-tabs > li > a:hover {
+  border: none;
+  display: inline-block;
+  border-radius: 4px;
+}
+
+.tabset-dropdown > .nav-tabs.nav-tabs-open > li {
+  display: block;
+  float: none;
+}
+
+.tabset-dropdown > .nav-tabs > li {
+  display: none;
+}
+</style>
+
 <script>
 $(document).ready(function () {
   window.buildTabsets("TOC");
+});
+
+$(document).ready(function () {
+  $('.tabset-dropdown > .nav-tabs > li').click(function () {
+    $(this).parent().toggleClass('nav-tabs-open')
+  });
 });
 </script>
 
 <!-- code folding -->
 
 
+
+
+</head>
+
+<body>
+
+
+<div class="container-fluid main-container">
 
 
 
@@ -308,18 +376,16 @@ $(document).ready(function () {
 
 
 <h1 class="title toc-ignore">Stat 579 - Homework #7</h1>
-<h4 class="author"><em>Your Name</em></h4>
-<h4 class="date"><em>10/18/2018</em></h4>
+<h4 class="author">Your Name</h4>
+<h4 class="date">10/10/2018</h4>
 
 </div>
 
 
 <div id="star-wars" class="section level2">
 <h2>Star Wars</h2>
-<ol style="list-style-type: decimal">
-<li>Download the RMarkdown file with these homework instructions to use as a template for your work. Make sure to replace “Your Name” in the YAML with your name.</li>
-<li>We are back to a survey collected by FiveThirtyEight. This time we are interested in a survey on Star Wars - the accompanying article is published <a href="https://fivethirtyeight.com/features/americas-favorite-star-wars-movies-and-least-favorite-characters/">here</a></li>
-</ol>
+<p>FiveThirtyEight is a website founded by Statistician and writer Nate Silver to publish results from opinion poll analysis, politics, economics, and sports blogging. One of the featured articles discusses <a href="https://fivethirtyeight.com/features/americas-favorite-star-wars-movies-and-least-favorite-characters/">popularity of movies in the Star Wars Franchise</a></p>
+<p>This article is based on a survey collected by FiveThirtyEight and publicly available on github. Use the code below to read in the data from the survey:</p>
 <pre class="r"><code>library(dplyr)
 library(ggplot2)
 library(readr)
@@ -344,7 +410,7 @@ head(starwars)</code></pre>
 ## 4       3292763116 Yes              Yes              Star Wars: Epis…
 ## 5       3292731220 Yes              Yes              Star Wars: Epis…
 ## 6       3292719380 Yes              Yes              Star Wars: Epis…
-## # ... with 34 more variables: `X5 Star Wars: Episode II Attack of the
+## # … with 34 more variables: `X5 Star Wars: Episode II Attack of the
 ## #   Clones` &lt;chr&gt;, `X6 Star Wars: Episode III Revenge of the Sith` &lt;chr&gt;,
 ## #   `X7 Star Wars: Episode IV A New Hope` &lt;chr&gt;, `X8 Star Wars: Episode V
 ## #   The Empire Strikes Back` &lt;chr&gt;, `X9 Star Wars: Episode VI Return of
@@ -369,13 +435,14 @@ head(starwars)</code></pre>
 ## #   the Star Trek franchise? Response` &lt;chr&gt;, `Gender Response` &lt;chr&gt;,
 ## #   `Age Response` &lt;chr&gt;, `Household Income Response` &lt;chr&gt;, `Education
 ## #   Response` &lt;chr&gt;, `Location (Census Region) Response` &lt;chr&gt;</code></pre>
-<ol start="3" style="list-style-type: decimal">
+<ol style="list-style-type: decimal">
+<li><p>Download the RMarkdown file with these homework instructions to use as a template for your work. Make sure to replace “Your Name” in the YAML with your name.</p></li>
 <li>How many people responded to the survey? How many people have seen at least one of the movies? Use the variable <code>Have you seen any of the 6 films in the Star Wars franchise? Response</code> to answer this question. Only consider responses of participants who have seen at least one of the Star Wars films for the remainder of the homework.</li>
 <li>Variables <code>Gender Response</code> and <code>Age Response</code> are two of the demographic variables collected. Use <code>dplyr</code> to provide a frequency break down for each variable. Does the result surprise you? Comment. Reorder the levels in the variable <code>Age Response</code> from youngest to oldest.</li>
 <li>Variables 10 through 15 answer the question: “Please rank the Star Wars films in order of preference with 1 being your favorite film in the franchise and 6 being your least favorite film.” for each of the films. Bring the data set into a long form. Introduce a variable for the star wars episode and the corresponding ranking. Find the average rank for each of the films. Are average ranks different between mens’ and womens’ rankings? On how many responses are the averages based? Show these numbers together with the averages.</li>
 <li>R2 D2 or C-3P0? Which of these two characters is the more popular one? Use responses to variables 25 and 26 to answer this question. Note: first you need to define what you mean by “popularity” based on the available data.<br />
 </li>
-<li>Popularity contest: which of the surveyed characters is the most popular? use the popularity measure you defined in the previous question to evaluate responses for characters 16 through 29. Use an appropriate long form of the data to get to your answer. Visualize the result.</li>
+<li><p>Popularity contest: which of the surveyed characters is the most popular? use the popularity measure you defined in the previous question to evaluate responses for characters 16 through 29. Use an appropriate long form of the data to get to your answer. Visualize the result.</p></li>
 </ol>
 <p>Due date: please refer to the website and Canvas for the due date.</p>
 <p>For the submission: submit your solution in an R Markdown file and (just for insurance) submit the corresponding html/word file with it.</p>

@@ -1,0 +1,51 @@
+---
+title: 'Stat 579 - Homework #8 - Section A'
+author: "Your Name"
+date: "10/24/2019"
+output: html_document
+---
+
+---
+title: 'Stat 579 - Homework #8 - Section A'
+author: "Your Name"
+date: "10/24/2019"
+output: html_document
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+## Urban stream monitoring
+
+For this homework, we will be using the Ames City Urban stream monitoring project available at https://www.cityofames.org/government/departments-divisions-i-z/water-pollution-control/urban-stream-monitoring
+
+1. Download the RMarkdown file with these homework instructions to use as a template for your work.
+Make sure to replace "Your Name" in the YAML with your name.
+2. Read the information available on the Urban Stream Monitoring project https://www.cityofames.org/government/departments-divisions-i-z/water-pollution-control/urban-stream-monitoring
+
+The table presented on this website can be read into R using the following couple of commands.
+
+```{r, message = FALSE, warning = FALSE}
+library(tidyverse)
+library(rvest)
+url <- "https://www.cityofames.org/government/departments-divisions-i-z/water-pollution-control/urban-stream-monitoring"
+doc <- read_html(url)
+tables <- doc %>% html_table(fill=TRUE)
+ames <- data.frame(tables[[1]])
+head(ames)
+```
+The overarching goal of this homework is to clean the data and get it into a format ready for an analysis.
+
+3. Bring the data into long form. 
+4. Measurements of E.Coli are in character format. Convert these values properly into numbers. How many missing values are there? What is the average of the measurements?
+5. The `Sample.Date` variable is a mess. Use `separate` to get the information into Month, Day and Year. Make sure that the `Sample.Date` variable is not being removed from the data in this process.
+6. Plot measurements by month, colour by creek, and facet by year. Describe the plot in 2-3 sentences.  
+7. Introduce a variable `Type` into the dataset that is `fecal coliform bacteria` for measurements before August 14, 2018 and `E.coli` for measurements taken afterwards.
+8. `lubridate` is an R package for working with times and dates. Use [RStudio's cheatsheet for lubridate](https://github.com/rstudio/cheatsheets/raw/master/lubridate.pdf) to find a way to convert the variable `Sample.Date` to a date.
+
+
+
+Due date: please refer to the website and Canvas for the due date. 
+
+For the submission: submit your solution in an R Markdown file and (just for insurance) submit the corresponding html/word file with it. 

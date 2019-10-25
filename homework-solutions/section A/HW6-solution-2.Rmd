@@ -1,0 +1,150 @@
+---
+title: 'Stat 579 - Homework #6'
+date: "10/10/2019"
+output: html_document
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+## Star Wars
+
+FiveThirtyEight is a website founded by Statistician and writer Nate Silver to publish results from  opinion poll analysis, politics, economics, and sports blogging.
+One of the featured articles discusses [popularity of movies in the Star Wars Franchise](https://fivethirtyeight.com/features/americas-favorite-star-wars-movies-and-least-favorite-characters/)
+
+This article is based on a survey collected by FiveThirtyEight and publicly available on github. Use the code below to read in the data from the survey:
+
+```{r, message=FALSE, warning=FALSE}
+library(dplyr)
+library(ggplot2)
+library(readr)
+library(tidyr)
+starwars <- read_csv("https://raw.githubusercontent.com/fivethirtyeight/data/master/star-wars-survey/StarWars.csv")
+
+# the following lines are necessary to fix the multibyte problem and make proper names
+# part of the names:
+line1 <- names(starwars)
+line2 <- unlist(starwars[1,])
+varnames <- paste(line1, line2)
+# clean up some of the multibyte characters:
+names(starwars) <- enc2native(stringi::stri_trans_general(varnames, "latin-ascii"))
+
+starwars <- starwars[-1,]
+head(starwars)
+```
+
+
+
+1. Download the RMarkdown file with these homework instructions to use as a template for your work.
+Make sure to replace "Your Name" in the YAML with your name.
+
+3. How many people responded to the survey? How many people have seen at least one of the movies? Use the variable `Have you seen any of the 6 films in the Star Wars franchise? Response` to answer this question. Only consider responses of participants who have seen at least one of the Star Wars films for the remainder of the homework.
+
+```{r}
+starwars %>% summarize('Number of people who responded to the survey' = n())
+
+starwars %>% filter(`Have you seen any of the 6 films in the Star Wars franchise? Response` == "Yes") %>%
+  summarize('Number of people who have seen Star Wars'=n())
+
+#data for participants who have seen at least one of the Star Wars films
+starwars2 <- starwars %>% filter(`Have you seen any of the 6 films in the Star Wars franchise? Response` == "Yes")
+```
+There were a total of 1186 people who responded to the survey. Out of the total number of people who responded to the survey, only 936 of them have seen at least one of the movies.
+
+4. Variables `Gender Response` and `Age Response` are two of the demographic variables collected. Use `dplyr` to provide a frequency break down for each variable. Does the result surprise you? Comment. Reorder the levels in the variable `Age Response` from youngest to oldest.
+
+```{r}
+starwars2 %>% count(`Gender Response`,`Age Response`)
+
+starwars2 %>% ggplot(aes(x = `Gender Response`,fill = `Gender Response`)) +geom_bar() +
+    facet_wrap(.~`Age Response`)
+
+#Here is done seperately
+starwars2 %>% count(`Gender Response`)
+starwars2 %>% count(`Age Response`)
+
+#reordering the variable `Age Response` from youngest to oldest
+starwars2$`Age Response` <- as.factor(starwars2$`Age Response`)
+starwars2$`Age Response` <- factor(starwars2$`Age Response`,levels(starwars2$`Age Response`)[c(2:4,1)])
+
+#the levels are 1 = >60, 2 = 18-29, 3 = 30-44, 4 = 45-60
+
+starwars2 %>% ggplot(aes(x=`Gender Response`,fill=`Gender Response`)) + geom_bar()
+starwars2 %>% ggplot(aes(x=`Age Response`, fill = `Age Response`)) + geom_bar()
+```
+
+There are a total of 423 males and 397 females. There are 180 respondents in the 18-29 age group, 207 respondents in the 30-44 age group, 240 respondents in the 45-60 age group, and 193 respondents in the 45-60 age group. The results don't really surprise me, because Star Wars was first released in the late 1970s, and I would reason that the target population were children, teenagers, and young adults. Since the survey was taken sometime in the 2010s, we would expect the most responses in the 45-60 age group. There are also almost a balance between men and females, although there are slightly more males.
+
+
+5. Variables 10 through 15 answer the question: "Please rank the Star Wars films in order of preference with 1 being your favorite film in the franchise and 6 being your least favorite film." for each of the films.
+Bring the data set into a long form. Introduce a variable for the star wars episode and the corresponding ranking.
+Find the average rank for each of the films. Are average ranks different between mens' and womens' rankings?
+On how many responses are the averages based? Show these numbers together with the averages.
+
+```{r}
+starwarsl <- starwars2 %>%
+  gather(key = Movie, value = Rank,`Please rank the Star Wars films in order of preference with 1 being your favorite film in the franchise and 6 being your least favorite film. Star Wars: Episode I  The Phantom Menace`:`X15 Star Wars: Episode VI Return of the Jedi`)
+
+starwarsl$Rank <- as.numeric(starwarsl$Rank)
+
+starwarsl %>% group_by(Movie) %>%
+  summarize(mean(Rank,na.rm=TRUE),
+  'Number of valid Responses' = sum(!is.na(Rank)), 'Total in the group' = n(),
+  Missing = n() -sum(!is.na(Rank)))
+
+#by men and women
+starwarsl$`Gender Response` <- as.factor(starwarsl$`Gender Response`)
+
+starwarsl %>% filter(!is.na(`Gender Response`)) %>% group_by(Movie ,`Gender Response`) %>%
+  summarize(mean(Rank,na.rm=TRUE),
+  'Number of valid Responses' = sum(!is.na(Rank)), 'Total in the group' = n(),
+  Missing = n() -sum(!is.na(Rank)))
+```
+
+All the numbers are given in the table output above. Looks like Episode V The Empire Strikes Back is the most favored film based off having the lowest average ranking. The biggest difference in rankings between Male and Females occur in Episode 1 The Phantom Menance with a mean difference of about 0.61 in ranking. The number of responses the averages are based off are shown in the table and it shows the number of missing values as well. Note that we filtered the NA genders in the last tibble, so the missing values comes from the movies.
+
+6. R2 D2 or C-3P0? Which of these two characters is the more popular one? Use responses to variables 25 and 26 to answer this question. Note: first you need to define what you mean by  "popularity" based on the available data.  
+
+```{r}
+#using very favorably as a popularity measure
+
+starwars2 %>% filter(`X26 R2 D2`=="Very favorably") %>% group_by(`X26 R2 D2`) %>%  
+  summarize(n=n())
+
+
+starwars2 %>% filter(`X25 C-3P0`=="Very favorably") %>% group_by(`X25 C-3P0`) %>%  
+  summarize(n=n())
+
+
+```
+
+Using "Very favorably," as the popularity measure, we see that R2 D2 is more popular than C-3P0 since R2 D2 has 562 counts for "very favorably," while C-3P0 only has 474 counts for "very favorably."
+
+Note that I decided to use this measure for popularity because it is hard to put popularity in an ordered scale. Popularity or how well I favor something is subjective to the person. For example, it is hard to measure the difference between "very favorably" and "somewhat favorably." If I put these two into numbers say 1 and 2, then their difference is 1. But "very favorably" and "somewhat favorably" can be much more far apart than some quantity difference. For someone, "very favorably," can mean the number 10 while "somewhat favorably" can mean the number 3. In this case, the difference is 7. So the best case in my opinion is to count the number of "very favorably" for each character instead of giving it a numeric value and taking averages.
+
+
+7. Popularity contest: which of the surveyed characters is the most popular? use the popularity measure you defined in the previous question to evaluate responses for characters 16 through 29. Use an appropriate long form of the data to get to your answer. Visualize the result.
+
+```{r}
+starwarslc <- starwars2 %>%
+  gather(key = Character, value = Favorablility, `Please state whether you view the following characters favorably, unfavorably, or are unfamiliar with him/her. Han Solo`: `X29 Yoda`)
+
+starwarslc %>% group_by(Character) %>% filter(Favorablility == "Very favorably") %>% 
+  summarize(Count =n())
+
+
+#visualize the result in Star Wars color
+starwarslc %>% filter(Favorablility == 'Very favorably') %>% 
+  mutate(Character = ifelse(Character == "Please state whether you view the following characters favorably, unfavorably, or are unfamiliar with him/her. Han Solo", "Han Solo",Character), Character = as.factor(Character)) %>% 
+  ggplot(aes(x=Character)) + geom_bar(fill="#FFE81F",colour="black") + coord_flip() + theme_minimal() +
+  theme(panel.background = element_rect(fill = "black"),panel.border = element_blank(),
+          panel.grid.major = element_blank(),
+          panel.grid.minor = element_blank())
+```
+
+Again, using "Very favorably," as the popularity measure, we see that the most popular character is Han Solo with 610 counts. This is also seen in the barchart created with Star Wars colors.
+
+Due date: please refer to the website and Canvas for the due date.
+
+For the submission: submit your solution in an R Markdown file and (just for insurance) submit the corresponding html/word file with it. 

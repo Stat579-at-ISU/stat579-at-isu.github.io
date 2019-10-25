@@ -1,0 +1,68 @@
+---
+title: 'Stat 579 - Homework #2 - section B'
+date: "9/10/2019"
+output: html_document
+---
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+## Homework #2
+
+For this homework we are using the data set `earthquakes` from the classdata package. `earthquake` contains data on every earthquake and earthquake-like event recorded by the USGS (United States Geological Survey) since Jan 1 2019.
+
+
+Run the following two commands to install the newest version of the package from github:
+
+```{r, eval = FALSE}
+library(devtools) # error? then run install.packages("devtools")
+devtools::install_github("heike/classdata")
+```
+
+Check what is in the data set:
+```{r}
+library(classdata)
+head(earthquakes)
+```
+
+1. Download the RMarkdown file with these homework instructions to use as a template for your work.
+Make sure to replace "Your Name" in the YAML with your name.
+
+2. Use one of the object inspecting functions discussed in class and interpret the result that you see by applying the function to the earthquakes data. 
+
+```{r}
+library(classdata)
+summary(earthquakes)
+```
+
+The summary function summarizes all of the variables that are within the data set. Things like the min/max and quartiles are included as well as counts. 
+
+3. Answer the following questions (and show your code): how many events were recorded in total? how many of those events are earthquakes? How many of the variables have the word `error` in their name? What is the average magnitude of the observed events?  
+
+There were 16,414 total events, of those, 16,282 were earthquakes. 3 of the variables have "error" in them (horizontal error, depth error and mag error). The average magnitude was 3.793.
+
+
+4. On July 12, residents of Seattle were rudely awakened by an earthqake of a magnitude of 4.6. What proportion of earthquakes in the data are (roughly) even bigger than the July 12 earthquake in Seattle? Show your code.
+
+```{r}
+library(classdata)
+summary(earthquakes$mag)
+```
+
+
+Roughly 25% were bigger than the July 12 earthquake in Seattle
+
+
+5. Visualize the observed geographic location of the events. Extra point for using `ggplot2`.
+
+```{r}
+library(ggplot2)
+library(classdata)
+ggplot(data = earthquakes, aes(x = longitude, y = latitude))+
+  geom_point(colour = "blue")
+```
+
+
+Due date: the homework is due a week from now on Tuesday 
+
+For the submission: submit your solution in an R Markdown file and (just for insurance) submit the corresponding html/word file with it. 

@@ -1,0 +1,77 @@
+---
+title: 'Stat 579 - Homework #3 - Section B'
+date: "9/17/2018"
+output: html_document
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+## Swiss Banknotes
+
+1. Download the RMarkdown file with these homework instructions to use as a template for your work.
+Make sure to replace "Your Name" in the YAML with your name.
+2. The R package `alr3` contains a data set called `banknote`, consisting of (physical) measurements on 200 Swiss bank notes, 100 of which are genuine, while the other half is counterfeit. Load this data set (you might have to install the package) using the code below. Also run the cryptic third line - it will make your life a lot easier for the rest of the homework. This turns variable Y explicitly into a factor variable, i.e. makes it discrete. We will discuss this in the course material later in more detail.
+
+```{r, message = FALSE}
+#install.packages("alr3")
+library(alr3) # if this throws an error of the form 'there is no package called alr3', uncomment the line above, run it once, then comment the line out again and run the code chunk again.
+data(banknote)
+banknote$Y <- factor(banknote$Y)
+```
+3. Use one of our object inspecting functions and interpret the result in the data that you see.
+```{r, message = FALSE}
+head(banknote)
+
+summary(banknote$Length)
+```
+The length of the bankotes ranges from 213.8mm to 216.3mm while the average length is of 214.5mm.
+
+4. Use the package `ggplot2` to draw a barchart of Y (0 is genuine, 1 is counterfeit). Map Y to the fill color of the barchart. 
+
+```{r, message =FALSE}
+library(ggplot2)
+
+ ggplot(data=banknote, aes(x =Y,fill = Y)) +
+  geom_bar() +
+   scale_fill_manual("Y", values = c("navy", "red"))
+```
+5. Use the package `ggplot2` to draw a histogram of one of the variables in the dataset that shows a distinction between genuine and counterfeit banknotes. Use fill color to show this difference. Choose the binwidth such that there are no gaps in the middle range of the histogram.
+```{r, message =FALSE}
+ggplot(banknote, aes(x = Diagonal, fill = Y)) +
+geom_histogram(binwidth = 0.25) +
+scale_fill_manual("Y", values = c("navy", "red"))  
+```
+6. Use the package `ggplot2` to draw a scatterplot of two (continuous) measurements, color by Y. Try to find a pair of measurements that allow you to separate perfectly between genuine and counterfeit banknotes. 
+```{r, message =FALSE}
+head(banknote)
+ggplot(banknote, aes(x =Length, y = Diagonal, color = Y)) +
+geom_point() +
+  scale_color_manual ("Y", values = c("navy", "red"))  
+```
+7. For each of the three figures above, write a two-three sentence summary, describing the
+    a. **structure of the plot**: what type of plot is it? Which variables are mapped to x, to y, and to the (fill) color?
+    b. **main message of the plot**: what is your main finding, i.e. what do you want viewers to learn from the plot?
+    c. **additional message**: point out anomalies or outliers, if there are any. 
+
+Plot1
+a)  This is a bar plot, maping the "Y" (genuine or counterfeit) on the X axis and the amount of banknotes of each category on the Y axis.The navy bar represents the genuine banknotes and the red color represents the counterfeit banknotes. 
+b)  The main finding is that there is the same number of genuine and counterfeit notes.
+
+Plot2
+a)  This is a histogram, X axis showslength of the notes while Y axis shows the frequency of each lenght for each category (counterfeit in red, and genuine in blue). 
+b)  The main finding is that the counterfeit banknotes tend to have a longer diagonal than authentic notes on average.
+c)  The blue section on the highest red bar indicates that there is a counterfeit note that has a diagonal length similar to the real notes. being markedly smaller (an outlier) than the rest of the counterfeit notes.
+
+Plot3
+a)  This is a scatterplot representing the relationship between diagonal (Y axis) and length (X axis) of the baknotes.Counterfeit notes are shown in red while navy denotes genuine banknotes.
+b)  The main finding is that although both categories of banknotes have a similar length, counterfeit(red) and gennuine (navy) banknotes differ clearly in their diagonal length.
+c) An abnormally long counterfeit note can be observed in the bottom right area of the plot.
+c)  
+
+
+
+Due date: the homework is due a week from now on Tuesday. 
+
+For the submission: submit your solution in an R Markdown file and (just for insurance) submit the corresponding html/word file with it. 

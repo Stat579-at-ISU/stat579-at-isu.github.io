@@ -1,0 +1,89 @@
+---
+title: "Stat 579 - Life Expectancy"
+date: "9/5/2019"
+output: html_document
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE, fig.width=4, fig.height=4)
+library(tidyverse)
+```
+
+# Life Expectancy in Mexico, Canada and the US 
+
+## Step-by-step plan of work
+
+1. Read the data
+2. Focus on values of Canada
+3. Visualize the values for Canada
+4. See whether we can find the problem
+5. ... then we'll see ...
+
+## Reading the data 
+
+```{r}
+## Get original life expectancy data from webpage.
+url <- "https://raw.githubusercontent.com/Stat579-at-ISU/stat579-at-isu.github.io/master/homework/data/gapminder-5060.csv"
+life5060 <- read.csv(url)
+head(life5060)
+
+## Get additional life expectancy data (70s-80s) from webpage.
+url2 <- "https://raw.githubusercontent.com/Stat579-at-ISU/stat579-at-isu.github.io/master/homework/data/gap7080.csv"
+gap7080 <- read.csv(url2)
+head(gap7080)
+
+## Combine both the data sets.
+combined_data = rbind(life5060, gap7080)
+```
+
+## Focus on the values for Canada
+
+```{r}
+canada <- combined_data %>% filter(country == "Canada")
+head(canada)
+```
+
+## Visualize 
+
+Draw a line for the life expectancy in Canada:
+```{r}
+canada %>% 
+  ggplot(aes(x = year, y = lifeExp)) +
+  geom_line()
+```
+
+Clearly there is something wrong with the value in 1957.
+
+## Find the problematic value and fix it
+
+```{r}
+canada %>% filter(year == 1957)
+
+canada_fixed <- canada %>% mutate(
+  lifeExp = replace(lifeExp, year==1957, 69.96)  
+)
+```
+
+## visualize the fixed data
+
+```{r}
+canada_fixed %>% ggplot(aes(x = year, y = lifeExp)) +
+  geom_line()
+```
+
+## ... on to the stretch goal ... 
+
+Add lines for Mexico and the US, color lines by country and add a legend
+
+```{r, fig.width = 6}
+canada_fixed %>% 
+  ggplot(aes(x = year, y = lifeExp, colour=country)) + geom_line() +
+  geom_line(data = combined_data %>% 
+              filter(country %in% c("United States", "Mexico")))
+
+```
+
+## General Comments:
+Before fixing the data point for Canada's life expectancy in 1957, we can see the answer '999999' doesn't make sense. After we fix it, we can see there is a positive linear relationship between life expectancy and time.
+
+When we compare the life expectancy lines between U.S., Canada, and Mexico, we see that the U.S. and Canada have roughly the same life expectancies (Canda is slightly higher) throughout the years. The life expectancy lines for both countries fluctuate in the same direction at the same time. Mexico's life expectancy started much lower than the other two countries, but increased much quicker. The difference between Canada's and Mexico's life expectancy went from roughly 20 years to half that of 10 years.

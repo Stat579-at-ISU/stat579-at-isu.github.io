@@ -1,0 +1,65 @@
+---
+title: "Stat 579 - Life Expectancy"
+date: "9/2/2019"
+output: html_document
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE, fig.width=4, fig.height=4)
+library(tidyverse)
+```
+
+# Life Expectancy in Mexico, Canada and the US 
+
+## Reading the data 
+
+```{r}
+url <- "https://raw.githubusercontent.com/Stat579-at-ISU/stat579-at-isu.github.io/master/homework/data/gapminder-5060.csv" # nasty looking, but doesn't make any assumptions about data on your machine
+life5060 <- read.csv(url)
+head(life5060)
+```
+
+```{r}
+url <- "https://raw.githubusercontent.com/Stat579-at-ISU/stat579-at-isu.github.io/master/homework/data/gap7080.csv" # nasty looking, but doesn't make any assumptions about data on your machine
+life7080 <- read.csv(url)
+head(life7080)
+```
+
+#Combine two datasets
+```{r}
+combined <- rbind(life5060, life7080)
+```
+
+
+## Focus on the values for Canada
+
+```{r}
+canada <- combined %>% filter(country == "Canada")
+head(canada)
+```
+
+
+## Find the problematic value and fix it
+
+```{r}
+canada %>% filter(year == 1957)
+
+canada_fixed <- canada %>% mutate(
+  lifeExp = replace(lifeExp, year==1957, 69.96)  
+)
+```
+
+
+## ... on to the stretch goal ... 
+
+Add lines for Mexico and the US, color lines by country and add a legend
+
+```{r, fig.width = 6}
+canada_fixed %>% 
+  ggplot(aes(x = year, y = lifeExp, colour=country)) + geom_line() +
+  geom_line(data = combined %>% 
+              filter(country %in% c("United States", "Mexico")))
+
+```
+
+From the above figure, it is obvious that life expectancy is increasing in all three countries. People have the shortest life expectation in Mexico while people in Canada expect to have the longest life. The difference between Canada and America is increasing. Mexico has the highest increasing rate, thus the gap between Mexico and two other countries is narrowing. There is a kick for the United States in the mid-70s, after mid-70s, the growth of life expectancy is more rapidly.       

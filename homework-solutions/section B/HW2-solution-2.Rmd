@@ -1,0 +1,59 @@
+---
+title: 'Stat 579 - Homework #2 - section B'
+date: "9/10/2019"
+output: html_document
+---
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+## Homework #2
+
+For this homework we are using the data set `earthquakes` from the classdata package. `earthquake` contains data on every earthquake and earthquake-like event recorded by the USGS (United States Geological Survey) since Jan 1 2019.
+
+
+Run the following two commands to install the newest version of the package from github:
+
+```{r, eval = FALSE}
+library(devtools) # error? then run install.packages("devtools")
+devtools::install_github("heike/classdata")
+```
+
+Check what is in the data set:
+```{r}
+library(classdata)
+head(earthquakes)
+```
+
+
+3. Answer the following questions (and show your code): how many events were recorded in total? how many of those events are earthquakes? How many of the variables have the word `error` in their name? What is the average magnitude of the observed events?  
+```{r}
+summary(earthquakes)
+dim(earthquakes)
+```
+16414 events in total were recorded. 16282 of them were earthquakes. Three variables have the word error in their name. The average magnitude is 3.793.
+
+
+
+4. On July 12, residents of Seattle were rudely awakened by an earthqake of a magnitude of 4.6. What proportion of earthquakes in the data are (roughly) even bigger than the July 12 earthquake in Seattle? Show your code.
+
+```{r}
+summary(earthquakes$mag)
+
+```
+approximately 25% of the earthquakes are stronger than 4.6
+
+
+5. Visualize the observed geographic location of the events. Extra point for using `ggplot2`.
+```{r}
+summary(earthquakes$latitude)
+summary(earthquakes$longitude)
+
+library(ggplot2)
+ggplot(data = earthquakes, aes(x = longitude, y = latitude))+
+  geom_point()
+```
+
+Due date: the homework is due a week from now on Tuesday 
+
+For the submission: submit your solution in an R Markdown file and (just for insurance) submit the corresponding html/word file with it. 

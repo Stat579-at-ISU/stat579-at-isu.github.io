@@ -1,0 +1,79 @@
+---
+title: 'Stat 579 - Homework #2 - Section A'
+date: "9/12/2019"
+output: html_document
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+## Swiss Banknotes
+
+1. Download the RMarkdown file with these homework instructions to use as a template for your work.
+Make sure to replace "Your Name" in the YAML with your name.
+2. The R package `alr3` contains a data set called `banknote`, consisting of (physical) measurements on 200 Swiss bank notes, 100 of which are genuine, while the other half is counterfeit. Load this data set (you might have to install the package) using the code below. Also run the cryptic third line - it will make your life a lot easier for the rest of the homework. This turns variable Y explicitly into a factor variable, i.e. makes it discrete. We will discuss this in the course material later in more detail.
+
+```{r, message = FALSE}
+# install.packages("alr3")
+library(alr3) # if this throws an error of the form 'there is no package called alr3', uncomment the line above, run it once, then comment the line out again and run the code chunk again.
+library(dplyr)
+library(ggplot2)
+
+data(banknote)
+banknote$Y <- factor(banknote$Y)
+```
+
+```{r include = FALSE}
+banknoteFake <- banknote %>% 
+                  filter(Y == 1)
+banknoteReal <- banknote %>% 
+                  filter(Y == 0)
+```
+3. Use one of our object inspecting functions and interpret the result in the data that you see.  
+Below shows 6 observations with banknotes classified as genuine (Y = 0) and 6 observations with banknotes classified as counterfeit (Y = 1).
+```{r echo = FALSE}
+head(banknoteReal)
+head(banknoteFake)
+```
+
+To help us interpret the data, we output a table of summary statistics. Just by looking at the data, we can see that there are apparent differences in the measurements for the top, diagonal, and bottom measurements between genuine and counterfeit banknotes.
+```{r echo = FALSE}
+summary(banknoteReal)
+summary(banknoteFake)
+```
+4. Use the package `ggplot2` to draw a barchart of Y (0 is genuine, 1 is counterfeit). Map Y to the fill color of the barchart. 
+```{r}
+ggplot(data = banknote, aes(x = Y, fill = Y)) + geom_bar() + 
+  ggtitle("Count of Counterfeit and Genuine Banknotes")
+```
+
+This visualization is a bar chart that counts the number of counterfeit and genuine banknotes in the sample dataset, where the counterfeit and the genuine banknotes are marked as categorical variables for the x-axis and the y-axis measures the number (frequency) of each kind of banknote that appears. The fill color helps us identify which bar corresponds to which type of banknote. From our chart, we can see that we had 100 genuine and 100 counterfeit banknotes so the sample size for both was the same.
+
+5. Use the package `ggplot2` to draw a histogram of one of the variables in the dataset that shows a distinction between genuine and counterfeit banknotes. Use fill color to show this difference. Choose the binwidth such that there are no gaps in the middle range of the histogram.
+
+```{r}
+ggplot(data = banknote, aes(x = Diagonal, fill = Y)) + geom_histogram(binwidth = .25) +
+  ggtitle("Frequency of Diagonal Measurements for Banknotes")
+```
+
+This visualization shows a histogram that depicts the frequencies (y-value) of the diagonal measurement (x-value) of a banknote taking on values binned in intervals of 0.25. The plot was 'filled' by the classification of each banknote being counterfeit or genuine to distinguish the distribution of each class of banknote. We can observe from the graph that counterfeit banknotes had a distribution of diagonal measures that was lower overall than the distribution of genuine banknotes to the point where counterfeit banknotes can likely be distinguished by their diagonal measure. Though, we must consider the outlier that is a genuine banknote that is mixed into the distribution of counterfeit banknotes, showing that this sample data does not provide a way to completely distinguish all banknotes.
+
+6. Use the package `ggplot2` to draw a scatterplot of two (continuous) measurements, color by Y. Try to find a pair of measurements that allow you to separate perfectly between genuine and counterfeit banknotes. 
+```{r}
+ggplot(data = banknote, aes(x = Right, y = Diagonal, color = Y)) + geom_point() +
+  ggtitle("Relationship between the Diagonal and Right Measurements of Banknotes")
+```
+
+This visualization shows a scatterplot that depicts the relationship between the right measurement of a banknote (x-value) and the diagonal measurement (y-value). Each data point on the plot was colored by the classification of each banknote being counterfeit or genuine to distinguish the distribution of each class of banknote. The plot shows that counterfeit banknotes have a noticeably lower value of diagonal measurements and on average a slightly higher right measurement. We notice that we can draw a line between points labeled as counterfeit and those labeled as genuine, showing that there is a distinct classification of the two classes that can be made from the right and diagonal measurements in the sample data. We also notice a possible outlier for the where the right measurement for one of the genuine banknotes had a value greater than 131 and fell more into the distribution of the counterfeit banknotes. 
+
+7. For each of the three figures above, write a two-three sentence summary, describing the
+    a. **structure of the plot**: what type of plot is it? Which variables are mapped to x, to y, and to the (fill) color?
+    b. **main message of the plot**: what is your main finding, i.e. what do you want viewers to learn from the plot?
+    c. **additional message**: point out anomalies or outliers, if there are any. 
+
+
+Due date: the homework is due a week from now on Thursday. 
+
+For the submission: submit your solution in an R Markdown file and (just for insurance) submit the corresponding html/word file with it. 
+

@@ -1,0 +1,126 @@
+---
+title: 'Stat 579 - Homework #3 - Section A'
+date: "9/19/2019"
+output: html_document
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+## Behavioral Risk Factor Surveillance System
+
+The Behavioral Risk Factor Surveillance System (BRFSS) is an annual survey provided by the Center for Disease Control (CDC) to assess behavioral and chronic diseases. The center surveys six individual-level behavioral health risk factors associated with the leading causes of premature mortality and morbidity among adults: 1) cigarette smoking, 2) alcohol use, 3) physical activity, 4) diet, 5) hypertension, and 6) safety belt use. 
+
+A subset of the data concentrating on Iowa with records for 2012 is given at
+```{r}
+url <- "https://raw.githubusercontent.com/Stat579-at-ISU/stat579-at-isu.github.io/master/homework/data/brfss-iowa-2018.csv"
+```
+
+The following code reads the data into your R session:
+```{r, cache = TRUE, warning = FALSE}
+iowa <- read.csv(url)
+library(tidyverse)
+```
+
+# 3. How many rows does that data set have, how many columns? Which types of variables does the data set have?
+```{r}
+str(iowa)
+```
+
+There are 9127 rows and 275 columns. The types of the variables are numeric, factor, logical and integer.
+
+##  Use `ggplot2` to draw a scatterplot of height (`HEIGHT3`) and weight (`WEIGHT2`), facet by gender (`SEX1`). State your expectation regarding the relationship between the variables, comment on the plot you see.
+```{r}
+iowa %>% ggplot(aes(x = HEIGHT3, y = WEIGHT2)) + geom_point() + facet_grid(~SEX1)
+```
+
+There is maybe a posistive linear relationship between height and weight in all genders. But there are still lots of the points which do not follow the relastionship. So it it hard to recognize the relationshiop visually.
+
+## Temporarily restrict weight and height to below 2500, then plot the values again. Describe the plot you see.
+```{r}
+iowa %>% filter(HEIGHT3< 2500 & WEIGHT2<2500 ) %>% ggplot(aes(x= HEIGHT3, y = WEIGHT2)) + geom_point()+ facet_grid(~SEX1)
+```
+
+From this plot, We can not recognize the evident relationship between weight and height. Most of point are located at the area of 0 to 400 in weight and 400 to 600 in height.
+
+## Use a combination of `filter` and logical expressions to answer the following questions:
+#a. What proportion of the height measurements are taken in metric measurements? 
+```{r}
+metric <- iowa %>% filter(HEIGHT3>=9000 & HEIGHT3<=9998)
+nrow(metric)/nrow(iowa)
+```
+#b. What is the range of (standard) height measurements for men, what is the range of (standard) height measurements for women? Draw histograms of (standard) height, facet by gender. Make sure to choose an appropriate bin width. Comment on the histograms and your choice of bin width
+```{r}
+iowa %>% filter(HEIGHT3>=200 & HEIGHT3<=711, SEX1 == 1 | SEX1 == 2) %>% group_by(SEX1) %>% summarize(min(HEIGHT3),max(HEIGHT3))
+iowa %>% filter(HEIGHT3>=200 & HEIGHT3<=711, SEX1 == 1 | SEX1 == 2) %>% ggplot(aes(x = HEIGHT3)) + geom_histogram(binwidth = 100) + facet_wrap(~SEX1)
+```
+
+From the histogram, we can see that the heigh of most female are located in 450 to 550. More than half of the male have height in 450 to 550 while some male have height in 550 to 650. We can also see that the average hight of male will be higher than female. I choose 100 as the binwidth so that the overall height level can be showed in the histogram.
+
+# c. How many missing values (?`is.na`) does the variable HEIGHT3 have?
+```{r}
+sum(is.na(iowa$HEIGHT3))
+```
+
+## 7. Fact finding - you might have to make use of the [codebook](https://www.cdc.gov/brfss/annual_data/2017/pdf/codebook17_llcp-v2-508.pdf) to answer the following questions, if you use the codebook, please include this in a comment in your answer. For all answers, include the code you used to get to the answer.
+
+# a. What is the mode of the number of adults (`NUMADULT`) in a household in Iowa in 2017?
+```{r}
+iowa %>% group_by(NUMADULT) %>% summarise(n=n()) %>% arrange(desc(n)) 
+```
+
+From the table, we can see that the mode is 2.
+
+# b. `EDUCA` is the variable containing the highest grade or year of school completed. Is the percentage of college graduates in Iowa higher or lower than the nation's average (based on the BRFSS sample)? 
+```{r}
+iowa %>% group_by(EDUCA) %>% summarise(n=n()) %>% mutate (percent = n/sum(n))
+```
+
+From the table, we can see that the percentage of graduates in Iowa is 32.67% which is smaller than the nation's average 37.42%.
+
+# c. Out of the people asked, what percentage of people got their flu shot (`FLSHTMY2`)  in July 2017 or after?
+```{r}
+a <- iowa %>% filter(FLSHTMY2 < 777777,  (FLSHTMY2 %/% 10000 >= 7 & FLSHTMY2 %% 10000 == 2017) | (FLSHTMY2 %% 10000 == 2018)) 
+nrow(a)/nrow(iowa %>% filter(FLSHTMY2 <= 999999))
+```
+
+
+A codebook describing the survey and a listing of all variables is available at [https://www.cdc.gov/brfss/annual_data/2017/pdf/codebook17_llcp-v2-508.pdf]().
+
+For each of the questions, show the code necessary to get to the answer. 
+Make sure to also write the answer to the question in a sentence.
+
+1. Download the RMarkdown file with these homework instructions to use as a template for your work.
+Make sure to replace "Your Name" in the YAML with your name.
+2. Load the dataset into your session and store it in the object `iowa`.
+3. How many rows does that data set have, how many columns? Which types of variables does the data set have? 
+4. Use `ggplot2` to draw a scatterplot of height (`HEIGHT3`) and weight (`WEIGHT2`), facet by gender (`SEX1`). State your expectation regarding the relationship between the variables, comment on the plot you see.
+5. Temporarily restrict weight and height to below 2500, then plot the values again. Describe the plot you see.
+
+It turns out, that the following coding scheme is used for HEIGHT3:
+
+| HEIGHT3 value  |  Interpretation    |
+|:- |:- |
+| 200 - 711 | Height (ft/inches), i.e. 410 is 4 feet, 10 inches	|
+| 7777 |	Don't know/Not sure	|
+| 9000 - 9998 |	Height (meters/centimeters), where the first 9 indicates that the measurement was metric, 9165 is 1 meter 65 cm |
+| 9999	| Refused |
+| BLANK |	Not asked or Missing |
+
+6. Use a combination of `filter` and logical expressions to answer the following questions:
+
+  a. What proportion of the height measurements are taken in metric measurements? 
+  b. What is the range of (standard) height measurements for men, what is the range of (standard) height measurements for women? Draw histograms of (standard) height, facet by gender. Make sure to choose an appropriate bin width. Comment on the histograms and your choice of bin width.
+  c. How many missing values (?`is.na`) does the variable HEIGHT3 have?
+
+7. Fact finding - you might have to make use of the [codebook](https://www.cdc.gov/brfss/annual_data/2017/pdf/codebook17_llcp-v2-508.pdf) to answer the following questions, if you use the codebook, please include this in a comment in your answer. For all answers, include the code you used to get to the answer.
+
+  a. What is the mode of the number of adults (`NUMADULT`) in a household in Iowa in 2017?
+  b. `EDUCA` is the variable containing the highest grade or year of school completed. Is the percentage of college graduates in Iowa higher or lower than the nation's average (based on the BRFSS sample)? 
+  c. Out of the people asked, what percentage of people got their flu shot (`FLSHTMY2`)  in July 2017 or after?
+    
+
+Due date: the homework is due a week from now on Thursday. 
+
+For the submission: submit your solution in an R Markdown file and (just for insurance) submit the corresponding html/word file with it. 

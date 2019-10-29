@@ -1,0 +1,113 @@
+---
+title: 'Stat 579 - Homework #8 - Section A'
+date: "10/24/2019"
+output: html_document
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+## Urban stream monitoring
+
+For this homework, we will be using the Ames City Urban stream monitoring project available at https://www.cityofames.org/government/departments-divisions-i-z/water-pollution-control/urban-stream-monitoring
+
+1. Download the RMarkdown file with these homework instructions to use as a template for your work.
+Make sure to replace "Your Name" in the YAML with your name.
+2. Read the information available on the Urban Stream Monitoring project https://www.cityofames.org/government/departments-divisions-i-z/water-pollution-control/urban-stream-monitoring
+
+The table presented on this website can be read into R using the following couple of commands.
+
+```{r, message = FALSE, warning = FALSE}
+library(tidyverse)
+library(rvest)
+url <- "https://www.cityofames.org/government/departments-divisions-i-z/water-pollution-control/urban-stream-monitoring"
+doc <- read_html(url)
+tables <- doc %>% html_table(fill=TRUE)
+ames <- data.frame(tables[[1]])
+head(ames)
+```
+The overarching goal of this homework is to clean the data and get it into a format ready for an analysis.
+
+3. Bring the data into long form. 
+
+```{r}
+# delete the empty row
+ames <- ames[-nrow(ames),]
+ames.ll <- ames %>% pivot_longer(Skunk.River:Worle.Creek, names_to = "River_name",
+                                 values_to = "Measurement")
+
+head(ames.ll)
+```
+
+4. Measurements of E.Coli are in character format. Convert these values properly into numbers. How many missing values are there? What is the average of the measurements?
+
+```{r}
+ames.ll <- ames.ll %>% mutate(
+  measurement.p = parse_number(Measurement, na=c("", "---", "-"))
+)
+
+# number of missing values
+ames.ll %>% summarise(
+  missing = sum(is.na(measurement.p)),
+  average = mean(measurement.p, na.rm = T)
+)
+
+```
+
+- Since I deleted one empty row, there are 33 missing values. And the average of the measurements is 2809. 
+
+5. The `Sample.Date` variable is a mess. Use `separate` to get the information into Month, Day and Year. Make sure that the `Sample.Date` variable is not being removed from the data in this process.
+
+```{r}
+ames.ll <- ames.ll %>% separate(Sample.Date, c("Month", "Day", "Year"), 
+                                remove = F, fill="left")
+
+# reorder the month
+ames.ll <- ames.ll %>% mutate(
+  Month = as.factor(Month),
+  Month = factor(Month, levels(Month)[rev(c(1, 5, 4, 3, 2, 7, 6))])
+)
+
+ames.ll %>% select(Sample.Date, Month, Day, Year) %>% head()
+```
+
+6. Plot measurements by month, colour by creek, and facet by year. Describe the plot in 2-3 sentences.
+
+```{r}
+ames.ll %>% filter(!is.na(Month)) %>% 
+  ggplot(aes(x=Month, y=(measurement.p), colour=River_name)) +
+  geom_bar(aes(fill=River_name), stat="identity") + 
+  facet_wrap(~Year) +
+  coord_flip()
+
+```
+
+- These bar plots show the measurements for each creek in different months and different years. This is not a perfect visualization since it's hard to compare the measurements among those creeks, but this visualization can show that which month gives the highest measurement for all five creeks given a year. Also, it shows that which creek contributes the most to the highest measurement. For example, September 2012 had very high measurement, to which the Worle Creek, Squaw Creek and College Creek contribute the most. 
+
+7. Introduce a variable `Type` into the dataset that is `fecal coliform bacteria` for measurements before August 14, 2018 and `E.coli` for measurements taken afterwards.
+
+```{r}
+ames.ll <- ames.ll %>% mutate(
+  Type = ifelse(Year == "2019" | 
+                  (Year == "2018" & 
+                     (Month == "August" | Month == "September" | Month == "October")),
+          "E.coli", "fecal coliform bacteria")
+) 
+ames.ll %>% head()
+```
+
+8. `lubridate` is an R package for working with times and dates. Use [RStudio's cheatsheet for lubridate](https://github.com/rstudio/cheatsheets/raw/master/lubridate.pdf) to find a way to convert the variable `Sample.Date` to a date.
+
+```{r}
+library(lubridate)
+ames.ll <- ames.ll %>% mutate(
+  Date = mdy(Sample.Date)
+)
+
+ames.ll %>% select(Sample.Date, Date)
+
+```
+
+
+

@@ -1,0 +1,38 @@
+---
+title: 'Stat 579 - Homework #10 - Section A'
+author: "Your Name"
+date: "11/14/2019"
+output: html_document
+---
+
+---
+title: 'Stat 579 - Homework #10 - Section A'
+author: "Your Name"
+date: "11/14/2019"
+output: html_document
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+## Hits and Flops
+
+For this homework we will make use of the datasets `box` and `budget` from the `classdata` package.
+If you haven't (re-)installed the package recently, do so with the command
+```{r, eval=FALSE}
+devtools::install_github("heike/classdata")
+```
+
+1. Download the RMarkdown file with these homework instructions to use as a template for your work.
+Make sure to replace "Your Name" in the YAML with your name.
+2. Make sure that the `Date` variable in the dataset `box` is encoded correctly. What is the time frame for which box office data was recorded?
+3. Plot total box office gross (`Total Gross`) by date. Label the top ten grossing movies nicely. (You could look into the `ggrepel` package for ideas)
+4. The dataset `budget` contains information on a movie's release date, worldwide gross, and the (estimated) production budget.
+How do domestic and worldwide gross compare? Draw a scatterplot, label some of the outliers, and draw a line for $y=x$ (identity line). Comment on the plot.
+5. Production companies are interested in making a profit on a movie. What is the relationship between movies' budgets and their worldwide gross? Use a log ratio of worldwide gross and budget to assess profitable movies (hits) and non-profitable ones (flops).
+6. The dataset `budget` includes release dates. Include available release dates into the `box` data set. How many release dates are successfully included in the box data? Identify some movies for which we have release dates but that did not get joined for some reason. Explain that reason. Extra credit (1 pt) for fixing at least one of the problems.
+
+Due date: please refer to the website and Canvas for the due date. 
+
+For the submission: submit your solution in an R Markdown file and (just for insurance) submit the corresponding html/word file with it. 

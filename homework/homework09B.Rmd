@@ -1,0 +1,111 @@
+---
+title: 'Stat 579 - Homework #9 - Extra Credit'
+author: "Your Name"
+date: "10/10/2019"
+output: html_document
+---
+
+---
+title: 'Stat 579 - Homework #9 - Extra Credit'
+author: "Your Name"
+date: "10/10/2019"
+output: html_document
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+This homework is for 15 points of extra credit to be added to the midterm exam points. 
+Please incorporate your answers into the R markdown file.
+
+# Tornadoes across the United States
+
+The National Weather Service has been keeping track of all sightings of tornadoes and the damage done by tornadoes since the 1950s and compiling all instances in the NWS Storm data.
+
+The file `1950-2018_all_tornadoes.csv` included in the folder you downloaded contains information on the tracks of tornadoes. Some tornadoes' tracks consist of several segments: sometimes a tornado changes its direction, sometimes a tornado touches down multiple times, sometimes a tornado crosses a state boundary. In all of these instances a new track segment is included in the data set.
+
+Here we are focusing on some of the aspects related to tornadoes and the damage they do.  You can get ready for answering the questions below by running the following lines of code:
+
+```{r, warning = FALSE, message = FALSE}
+library(tidyverse)
+storms <- read.csv("data/1950-2018_all_tornadoes.csv")
+```
+
+0. Include your name in the YAML at the top of this file. Include your responses to the questions (code and comments) in this file and submit in Canvas at the end of the time period. 
+
+1. (2.25 points) Each row of the `storms` data set corresponds to a segment of a tornado track.  How many track segments have been collected? In which year (`yr`) were the most track segments collected (and how many)? Draw a plot of the number of track segments by year. Describe the relationship in two to three sentences.
+
+```{r}
+# Your code goes here
+```
+
+2. The variable `loss` captures the monetary loss due to a segment of a tornado. This is not a very reliable variable, but we can still get some use out of it. 
+
+For segments before 1996 the variable `loss` is capturing loss in categories 1 through 9, according to the scheme below.
+
+| Value 	| 0 |   1 	|    2 	|     3 	|     4 	|     5 	|      6 	|      7 	|      8 	|     9 	|
+|-------	|----:	|----:	|-----:	|------:	|------:	|------:	|------:	|------:	|------:	|------:	|
+| lower limit	| NA |   \$0 	|  \$50 	|  \$500 	| $5000 	| \$ $5 \cdot 10^{4}$  |\$ $5 \cdot 10^{5}$  |\$ $5 \cdot 10^{6}$  |\$ $5 \cdot 10^{7}$  |\$ $5 \cdot 10^{8}$  |
+| upper limit	| NA | $50 	| $500 	| $5000 	| $50000 	| \$ $5 \cdot 10^{5}$ | \$ $5 \cdot 10^{6}$  |\$ $5 \cdot 10^{7}$  |\$ $5 \cdot 10^{8}$  | --- |
+
+  a. (2.625 points) Introduce a new variable `myloss` into the storms data, in which the categories of loss values in years before 1996 are replaced by the midpoints of the intervals, i.e. replace  a value of 1 by 25, a value of 2 by 250, a value of 3 by 2500, ...
+    A value of 9 should be replaced by $2.5 \cdot 10^{9}$. A value of 0 should be replaced by a missing value. Plot the resulting variable (for the years 1950 to 1995) and comment.
+
+```{r}
+# Your code goes here
+```
+
+  b. (1.875 points) For losses of the years 1996 and after, a value of 0, again, indicates a missing value. All other values are reported in US Dollars. 
+  Plot a histogram of  log loss (use a base 10 for your log). Facet by magnitude (`mag`) of the tornado. A higher magnitude indicates a stronger storm. Summarize the relationship between magnitude and (log) loss in two to three sentences. Are there any unusual patterns? 
+  
+```{r}
+# Your code goes here
+```
+  
+  c. (1.5 points) For the log loss in the years since 1996 plot side-by-side boxplots by year. Comment on the pattern. It turns out that between 1996 and 2015 loss was captured in Millions of US Dollars. Since 2016 loss is captured in US Dollars. Adjust the data and calculate a mean loss.
+  
+
+```{r}
+# Your code goes here
+```
+
+3. In order to keep track of which segments belong to the  track of a single tornado, we can use the variables `yr` and `om`, i.e. segments with the same year and `om` value belong to the same tornado.
+
+  a. (2.625 points) For each tornado since 1980, create a summary consisting of 
+    
+  - the number of segments of the tornado,
+  - the total length (`len`) of the tornado's track (in miles),
+  - the average width (`wid`) of the tornado (in yards),
+  - the total number of injuries (`inj`) and fatalities, (`fat`)
+  - the number of states the tornado passed through 
+  - (one of) the state(s) the tornado passed through 
+  
+  Save the resulting data set as `tornado`. 
+  
+```{r}
+# Your code goes here
+```
+
+
+  b. (1.5 points) What are the top six states in terms of tornadoes? How many tornadoes happened in each of these states  since 1980? 
+  
+```{r}
+# Your code goes here
+```
+
+  c. (1.125 points) How many tornadoes happen on average annually
+in the United States since 1980? In how many years since 2000 have we seen more than an average number of tornadoes?
+
+```{r}
+# Your code goes here
+```
+
+4. (1.5 points) We are going back to the tornado segments data (`storms`).
+Plot geographic latitude and longitude of a segment's geographic starting location (`slat` and `slon`), colour by state (`st`). Describe the pattern.
+
+```{r}
+# Your code goes here
+```
+
+

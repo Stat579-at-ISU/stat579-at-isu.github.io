@@ -1,22 +1,9 @@
-<html>
-<head>
-	<title>stat579. intro statistical computing. iastate.</title>
-	<link rel=stylesheet type=text/css href=style.css>
-</head>
-<body>
-<div id=navbar>
-		  <p><a href=/hofmann/~stat579/index.html>&#8594;home</a></p>
-			</div>
-	<div id=wrap>
-<h1>stat 579</h1>
-<h2 class=subhead>Introduction to Statistical Computing</h2>
-<p><strong>Fall 2018</strong><br />
-<h2>Title</h2>
-<h3>Authors</h3>
-<p>Abstract
-</p>
-</div>
-<div id=footer>
-	
-</div></body>
-</html>
+---
+author: Pak Hon Cheung, Zhuoyi Zhao
+title: Auto Insurance Claims
+topic: "Presentations"
+layout: post
+root: ../../../
+---
+
+We are going to do exploratory analysis on the dataset, and see if there is an inherent relationship between the number of accidents and factors such as location, gender, education, claim reason, vehicle class, vehicle size, coverage plan, income rate, marital status, etc. using packages (e.g., dplyr, ggplot) in R.

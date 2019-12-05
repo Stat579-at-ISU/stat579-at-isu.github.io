@@ -1,22 +1,10 @@
-<html>
-<head>
-	<title>stat579. intro statistical computing. iastate.</title>
-	<link rel=stylesheet type=text/css href=style.css>
-</head>
-<body>
-<div id=navbar>
-		  <p><a href=/hofmann/~stat579/index.html>&#8594;home</a></p>
-			</div>
-	<div id=wrap>
-<h1>stat 579</h1>
-<h2 class=subhead>Introduction to Statistical Computing</h2>
-<p><strong>Fall 2018</strong><br />
-<h2>Title</h2>
-<h3>Authors</h3>
-<p>Abstract
-</p>
-</div>
-<div id=footer>
-	
-</div></body>
-</html>
+---
+author: Xiaoyin Li, Behzad Jeddi
+title: Extensive and Intensive Agricultural Supply Response
+topic: "Presentations"
+layout: post
+root: ../../../
+---
+
+Interest in agricultural supply response increased dramatically after model predictions of land use change were used to estimate biofuel greenhouse gas emissions. The models divide crop response into higher yield—the intensive margin—or more land—the extensive margin. Input adjustments are assumed to drive yield response. But most yield changes result from adoption of technology. Regulators and modelers assume that increased harvested area implies conversion of land from forest or pasture to crops. With the notable exception of African countries, the recent expansion of harvested area is due to more
+intensive use of existing agricultural land through multiple cropping and technology improvement. 

@@ -1,22 +1,9 @@
-<html>
-<head>
-	<title>stat579. intro statistical computing. iastate.</title>
-	<link rel=stylesheet type=text/css href=style.css>
-</head>
-<body>
-<div id=navbar>
-		  <p><a href=/hofmann/~stat579/index.html>&#8594;home</a></p>
-			</div>
-	<div id=wrap>
-<h1>stat 579</h1>
-<h2 class=subhead>Introduction to Statistical Computing</h2>
-<p><strong>Fall 2018</strong><br />
-<h2>Title</h2>
-<h3>Authors</h3>
-<p>Abstract
-</p>
-</div>
-<div id=footer>
-	
-</div></body>
-</html>
+---
+author: Alexander Fonseca-Martinez
+title: Exploration and description of Airbnb metrics in NYC, NY, USA.
+topic: "Presentations"
+layout: post
+root: ../../../
+---
+
+Since 2008, guests and hosts have used Airbnb to expand on traveling possibilities and present more unique, personalized way of experiencing the world. The dataset describes the listing activity and metrics in NYC, NY for 2019, and includes all needed information to find out more about hosts and geographical availability. With this information, I would like to investigate if there is any noticeable difference of traffic among different areas. Also, identify the most visited locations, trends on prices. 

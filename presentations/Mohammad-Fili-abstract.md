@@ -1,20 +1,22 @@
----
-author: Mohammad Fili, Amir Malakooti
-title: Olympics Analysis
-topic: "Presentations"
-layout: post
-root: ../../../
----
-
-In this project, we want to extract interesting knowledge and relationships which help us better understand this event and also give insights to those interested in a particular sport.
-
-The results may be helpful to:
-* Get a general insight into the Olympics for over 120 years.
-* Use as a benchmark to compare an athlete with the best individuals in a specific sport.
-* Find the competitive rivals in each sport.
-* Use the result to plan for the future (macro-level planning inside a federation)
-* Evaluate countries' performance in the Olympics in each sport during the years.
-
-
-
-
+<html>
+<head>
+	<title>stat579. intro statistical computing. iastate.</title>
+	<link rel=stylesheet type=text/css href=style.css>
+</head>
+<body>
+<div id=navbar>
+		  <p><a href=/hofmann/~stat579/index.html>&#8594;home</a></p>
+			</div>
+	<div id=wrap>
+<h1>stat 579</h1>
+<h2 class=subhead>Introduction to Statistical Computing</h2>
+<p><strong>Fall 2018</strong><br />
+<h2>Title</h2>
+<h3>Authors</h3>
+<p>Abstract
+</p>
+</div>
+<div id=footer>
+	
+</div></body>
+</html>

@@ -1,13 +1,11 @@
 ---
 title: "Stat 579 - Life Expectancy"
 author: "Your Name"
-date: "8/30/2018"
 output: html_document
 ---
 ---
 title: "Stat 579 - Life Expectancy"
 author: "Your Name"
-date: "8/30/2018"
 output: html_document
 ---
 

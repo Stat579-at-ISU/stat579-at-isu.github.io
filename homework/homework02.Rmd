@@ -1,14 +1,12 @@
 ---
-title: 'Stat 579 - Homework #2 - Section A'
+title: 'Stat 579 - Homework #2'
 author: "Your Name"
-date: "9/12/2018"
 output: html_document
 ---
 
 ---
-title: 'Stat 579 - Homework #2 - Section A'
+title: 'Stat 579 - Homework #2'
 author: "Your Name"
-date: "9/12/2018"
 output: html_document
 ---
 
@@ -38,6 +36,5 @@ banknote$Y <- factor(banknote$Y)
     c. **additional message**: point out anomalies or outliers, if there are any. 
 
 
-Due date: the homework is due a week from now on Thursday. 
 
 For the submission: submit your solution in an R Markdown file and (just for insurance) submit the corresponding html/word file with it. 

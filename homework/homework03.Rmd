@@ -1,14 +1,12 @@
 ---
-title: 'Stat 579 - Homework #3 - Section A'
+title: 'Stat 579 - Homework #3'
 author: "Your Name"
-date: "9/19/2019"
 output: html_document
 ---
 
 ---
-title: 'Stat 579 - Homework #3 - Section A'
+title: 'Stat 579 - Homework #3'
 author: "Your Name"
-date: "9/19/2019"
 output: html_document
 ---
 
@@ -66,6 +64,5 @@ It turns out, that the following coding scheme is used for HEIGHT3:
   c. Out of the people asked, what percentage of people got their flu shot (`FLSHTMY2`)  in July 2017 or after?
     
 
-Due date: the homework is due a week from now on Thursday. 
 
 For the submission: submit your solution in an R Markdown file and (just for insurance) submit the corresponding html/word file with it. 

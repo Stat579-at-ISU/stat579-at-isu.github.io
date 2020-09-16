@@ -1,14 +1,12 @@
 ---
-title: 'Stat 579 - Homework #4 - Section A'
+title: 'Stat 579 - Homework #4'
 author: "Your Name"
-date: "9/26/2019"
 output: html_document
 ---
 
 ---
-title: 'Stat 579 - Homework #4 - Section A'
+title: 'Stat 579 - Homework #4'
 author: "Your Name"
-date: "9/26/2019"
 output: html_document
 ---
 
@@ -66,6 +64,5 @@ Implement your transformation. For your convenience: 1 ft equals 30.48 cm, 1 inc
 
 8. Use `ggplot2` to draw a scatterplot of weight (`WTKG3`) by height (new `height` variable). Facet by gender and comment.
 
-Due date: the homework is due a week from now on Thursday. 
 
 For the submission: submit your solution in an R Markdown file and (just for insurance) submit the corresponding html/word file with it. 

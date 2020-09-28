@@ -19,7 +19,7 @@ hofplus %>% filter(nameLast=="Sosa")
 
 #######
 library(classdata)
-devtools::install_github("heike/classdata")
+remotes::install_github("heike/classdata")
 library(classdata)
 summary(iowa$Date)
 head(iowa$Date)

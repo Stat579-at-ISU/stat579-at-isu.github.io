@@ -1,14 +1,12 @@
 ---
-title: 'Stat 579 - Homework #6 - Section B'
+title: 'Stat 579 - Homework #6'
 author: "Your Name"
-date: "10/8/2019"
 output: html_document
 ---
 
 ---
-title: 'Stat 579 - Homework #6 - Section B'
+title: 'Stat 579 - Homework #6'
 author: "Your Name"
-date: "10/8/2019"
 output: html_document
 ---
 
@@ -59,7 +57,5 @@ ggplot(data = fly, aes(x = 1)) +
 
 6. Investigate the relationship between gender and the variables `Do.you.have.any.children.under.18.` and `baby.on.plane`. How is the attitude towards babies on planes shaped by gender and own children under 18? Find a plot that summarises your findings (use `ggplot2`).
 
-
-Due date: the homework is due a week from now on Tuesday 
 
 For the submission: submit your solution in an R Markdown file and (just for insurance) submit the corresponding html/word file with it. 

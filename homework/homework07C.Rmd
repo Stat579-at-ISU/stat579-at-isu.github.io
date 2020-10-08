@@ -1,0 +1,42 @@
+---
+title: 'Stat 579 - Homework #7'
+author: "Your Name"
+output: html_document
+---
+
+---
+title: 'Stat 579 - Homework #7'
+author: "Your Name"
+output: html_document
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+## Palmers Penguins
+
+This might be the only flock of penguins that come with an R hexsticker! 
+For this assignment, we will be using Allison Horst's palmerpenguins dataset available from her [github repository](https://allisonhorst.github.io/palmerpenguins/). 
+The command `remotes::install_github("allisonhorst/palmerpenguins")` installs the R package `palmerpenguins`. We will use
+the data set `penguins`. 
+This data frame consists of 344 rows and 8 columns of body measurements of penguins of different species and sexes. Use `?penguins` to get more information on every one of the variables.
+
+1. Download the RMarkdown file with these homework instructions to use as a template for your work.
+Make sure to replace "Your Name" in the YAML with your name.
+
+2. How many differeny species of penguins are in the dataset? How many islands are there?
+Describe the relationship between penguin species and islands. Document your conclusion with an appropriate numeric or graphical summary.
+
+3.  Each penguin should have four body measurements and a gender assignment. Is the dataset complete? Introduce a logical variable `missing` that is `TRUE` if any of the measurements or the sex assignment is missing and `FALSE` otherwise. How many penguins of each species have any missing values? 
+
+4. When dealing with missing values, we often ask whether there is a pattern to the missingness or whether missing values occur at random. Based on what you see here, would you assume that missing values are occuring at random or that there is a pattern? Make a case for your conclusion based on the data.
+
+5. Using `ggplot2` functionality create side-by-side boxplots of flipper length by species. Use `dplyr` functionality to determine the average flipper length by species? Assume normality and find 95% confidence intervals for the average flipper lengths by species. Interpret the result. 
+
+4. Use `ggplot2` functionality to create scatterplots of flipper length and body mass, color by species and map sex to shape of points. Comment on the possibility to distinguish between different species. Consider the observations with missing sex assignment. Based on the chart, what sex would you assume for these penguins?
+Use `dplyr` to calculate average flipper length and average body mass for each species and gender. Do the numeric summaries support your earlier decisions on gender assignment?
+
+5. Include a picture of a penguin in your RMarkdown file. Make sure to give the picture a caption and refer to it in your writeup.
+
+For the submission: submit your solution in an R Markdown file and (just for insurance) submit the corresponding html/word file with it. 

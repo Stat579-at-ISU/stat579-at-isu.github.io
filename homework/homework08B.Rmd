@@ -1,14 +1,12 @@
 ---
-title: 'Stat 579 - Homework #8 - Section B'
+title: 'Stat 579 - Homework #8'
 author: "Your Name"
-date: "10/29/2019"
 output: html_document
 ---
 
 ---
-title: 'Stat 579 - Homework #8 - Section B'
+title: 'Stat 579 - Homework #8'
 author: "Your Name"
-date: "10/29/2019"
 output: html_document
 ---
 
@@ -47,12 +45,12 @@ head(starwars)
 Make sure to replace "Your Name" in the YAML with your name.
 
 3. How many people responded to the survey? How many people have seen at least one of the movies? Use the variable `Have you seen any of the 6 films in the Star Wars franchise? Response` to answer this question. Only consider responses of participants who have seen at least one of the Star Wars films for the remainder of the homework.
-4. Variables `Gender Response` and `Age Response` are two of the demographic variables collected. Use `dplyr` to provide a frequency break down for each variable. Does the result surprise you? Comment. Reorder the levels in the variable `Age Response` from youngest to oldest.
+4. Variables `Gender Response` and `Age Response` are two of the demographic variables collected. Use `dplyr` to provide a frequency break down for each variable. Does the result surprise you? Comment. Reorder the levels in the variable `Age Response` from youngest to oldest and plot in a barchart.
 5. Variables 10 through 15 answer the question: "Please rank the Star Wars films in order of preference with 1 being your favorite film in the franchise and 6 being your least favorite film." for each of the films. 
 Bring the data set into a long form. Introduce a variable for the star wars episode and the corresponding ranking. 
 Find the average rank for each of the films. Are average ranks different between mens' and womens' rankings?
-On how many responses are the averages based? Show these numbers together with the averages.
-6. R2 D2 or C-3P0? Which of these two characters is the more popular one? Use responses to variables 25 and 26 to answer this question. Note: first you need to define what you mean by  "popularity" based on the available data.  
+On how many responses are the averages based (make sure to not overlook missing values)? Show these numbers together with the averages.
+6. R2 D2 or C-3P0? Which of these two characters is the more popular one? Use responses to variables 25 and 26 to answer this question. Note: first you need to define what you mean by  "popularity" based on the available data. Include your definition of popularity in words.   
 7. Popularity contest: which of the surveyed characters is the most popular? use the popularity measure you defined in the previous question to evaluate responses for characters 16 through 29. Use an appropriate long form of the data to get to your answer. Visualize the result. 
 
 

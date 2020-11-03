@@ -1,14 +1,12 @@
 ---
-title: 'Stat 579 - Homework #9 - Section A'
+title: 'Stat 579 - Homework #9'
 author: "Your Name"
-date: "10/31/2019"
 output: html_document
 ---
 
 ---
-title: 'Stat 579 - Homework #9 - Section A'
+title: 'Stat 579 - Homework #9'
 author: "Your Name"
-date: "10/31/2019"
 output: html_document
 ---
 
@@ -17,15 +15,40 @@ output: html_document
 knitr::opts_chunk$set(echo = TRUE)
 ```
 
-## Murder mystery
+## Murder mystery: Who dunnit?
 
-Github user `sciencificity` has adapted the Murder Mystery by Knight Lab to an R based tidyverse Whodunnit.
+Our homework this week is an adaption of the Murder Mystery by Knight Lab to an R based tidyverse Whodunnit.
 
-1. If you haven't done so yet, install the murder-mystery package by running the following command:
+You are given the following clue: 
+
+> A crime has taken place and the detective needs your help. The detective gave you the crime scene report, but you somehow lost it. You vaguely remember that the crime was a murder that occurred sometime on Jan.15, 2018 and that it took place in SQL City. Start by retrieving the corresponding crime scene report from the police department's database.
+
+
+1. Iinstall the murder-mystery package by running the following command:
 ```{r, eval = FALSE}
-devtools::install_github("sciencificity/reclues")
+remotes::install_github("sciencificity/reclues")
 ```
-2. Create an Rmarkdown file with an annotated walkthrough. Make use of `left_join` in at least two instances.
+2. The `reclues` package contains  several datasets:
+
+|Data set	|Description	|
+|------------------------	|------------------------------------------------	|
+| crime_scene_report     	| Crime scene report                             	|
+| drivers_license        	| Drivers license                                	|
+| facebook_event_checkin 	| Facebook checkin event                          |
+| get_fit_now_check_in   	| Fit Now checkin details                        	|
+| get_fit_now_member     	| Fit Now member details                         	|
+| income                 	| Income                                         	|
+| interview              	| Interview                                      	|
+| person                 	| Person                                         	|
+| solution               	| Solution                                       	|
+
+Start the murder mystery by identifying (and reading) the crime scene report. From there, follow the clues :)
+```{r}
+library(reclues)
+head(crime_scene_report)
+```
+
+2. Create an RMarkdown file with an annotated walkthrough. Make use of `left_join` in at least two instances.
 3. Check your solution at http://mystery.knightlab.com/ and follow the additional clues. 
 4. Include the solution for the second half of the mystery in your walkthrough.
 

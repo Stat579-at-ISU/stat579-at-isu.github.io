@@ -11,3 +11,7 @@ dd {
     -webkit-margin-start: 40px;
     -moz-margin-start: 40px;
 }
+
+.hljs-github .hljs {
+    background: #cccccc;
+}

@@ -21,7 +21,7 @@ Make sure to replace "Your Name" in the YAML with your name.
 2. The R package `alr3` contains a data set called `banknote`, consisting of (physical) measurements on 200 Swiss bank notes, 100 of which are genuine, while the other half is counterfeit. Load this data set (you might have to install the package) using the code below. Also run the cryptic third line - it will make your life a lot easier for the rest of the homework. This turns variable Y explicitly into a factor variable, i.e. makes it discrete. We will discuss this in the course material later in more detail.
 
 ```{r, message = FALSE}
-# install.packages("alr3")
+# install.packages("alr3", repos = c("http://R-Forge.R-project.org"), dep = TRUE)
 library(alr3) # if this throws an error of the form 'there is no package called alr3', uncomment the line above, run it once, then comment the line out again and run the code chunk again.
 data(banknote)
 banknote$Y <- factor(banknote$Y)

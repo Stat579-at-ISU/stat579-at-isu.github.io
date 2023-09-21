@@ -18,9 +18,9 @@ knitr::opts_chunk$set(echo = TRUE)
 
 The Behavioral Risk Factor Surveillance System (BRFSS) is an annual survey provided by the Center for Disease Control (CDC) to assess behavioral and chronic diseases. The center surveys six individual-level behavioral health risk factors associated with the leading causes of premature mortality and morbidity among adults: 1) cigarette smoking, 2) alcohol use, 3) physical activity, 4) diet, 5) hypertension, and 6) safety belt use. 
 
-A subset of the data concentrating on Iowa with records for 2018 is given at
+A subset of the data concentrating on Iowa with records for 2022 is given at
 ```{r}
-url <- "https://raw.githubusercontent.com/Stat579-at-ISU/stat579-at-isu.github.io/master/homework/data/brfss-iowa-2018.csv"
+url <- "https://raw.githubusercontent.com/Stat579-at-ISU/stat579-at-isu.github.io/master/homework/data/brfss-iowa-2022.csv"
 ```
 
 The following code reads the data into your R session:
@@ -29,7 +29,7 @@ iowa <- read.csv(url)
 library(tidyverse)
 ```
 
-A codebook describing the survey and a listing of all variables is available at [https://www.cdc.gov/brfss/annual_data/2017/pdf/codebook17_llcp-v2-508.pdf]().
+A codebook describing the survey and a listing of all variables is available at [https://www.cdc.gov/brfss/annual_data/2022/zip/codebook22_llcp-v2-508.zip](). Download it, and unzip it. Open the file in a browser.
 
 For each of the questions, show the code necessary to get to the answer. 
 Make sure to also write the answer to the question in a sentence.
@@ -57,11 +57,11 @@ It turns out, that the following coding scheme is used for HEIGHT3:
   b. What is the range of (standard) height measurements for men, what is the range of (standard) height measurements for women? Draw histograms of (standard) height, facet by gender. Make sure to choose an appropriate bin width. Comment on the histograms and your choice of bin width.
   c. How many missing values (?`is.na`) does the variable HEIGHT3 have?
 
-7. Fact finding - you might have to make use of the [codebook](https://www.cdc.gov/brfss/annual_data/2017/pdf/codebook17_llcp-v2-508.pdf) to answer the following questions, if you use the codebook, please include this in a comment in your answer. For all answers, include the code you used to get to the answer.
+7. Fact finding - you might have to make use of the [codebook](https://www.cdc.gov/brfss/annual_data/2022/zip/codebook22_llcp-v2-508.zip) to answer the following questions, if you use the codebook, please include this in a comment in your answer. For all answers, include the code you used to get to the answer.
 
-  a. What is the mode of the number of adults (`NUMADULT`) in a household in Iowa in 2017?
+  a. What is the mode of the number of adults (`NUMADULT`) in a household in Iowa in 2022?
   b. `EDUCA` is the variable containing the highest grade or year of school completed. Is the percentage of college graduates in Iowa higher or lower than the nation's average (based on the BRFSS sample)? 
-  c. Out of the people asked, what percentage of people got their flu shot (`FLSHTMY2`)  in July 2017 or after?
+  c. Out of the people asked, what percentage of people got their flu shot (`FLSHTMY3`)  in July 2022 or after?
     
 
 

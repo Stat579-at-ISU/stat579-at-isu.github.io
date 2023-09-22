@@ -38,7 +38,7 @@ Make sure to also write the answer to the question in a sentence.
 Make sure to replace "Your Name" in the YAML with your name.
 2. Load the dataset into your session and store it in the object `iowa`.
 3. How many rows does that data set have, how many columns? Which types of variables does the data set have? 
-4. Use `ggplot2` to draw a scatterplot of height (`HEIGHT3`) and weight (`WEIGHT2`), facet by gender (`SEX1`). State your expectation regarding the relationship between the variables, comment on the plot you see.
+4. Use `ggplot2` to draw a scatterplot of height (`HEIGHT3`) and weight (`WEIGHT2`), facet by gender (`SEXVAR`). State your expectation regarding the relationship between the variables, comment on the plot you see.
 5. Temporarily restrict weight and height to below 2500, then plot the values again. Describe the plot you see.
 
 It turns out, that the following coding scheme is used for HEIGHT3:

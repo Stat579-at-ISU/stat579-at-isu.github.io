@@ -20,7 +20,7 @@ You will be asked questions about this dataset. For all of your answers provide 
 > Load the data at <a href="http://www.hofroe.net/stat579/bikesharing/bikes.csv">http://www.hofroe.net/stat579/bikesharing/bikes.csv</a> into your R session. The dataset contains information for each trip. How many trips were there overall? How many factor variables are in the data, how many others (describe which ones)?
 
 ```{r}
-#bikes <- read.csv("http://www.hofroe.net/stat579/bikesharing/bikes.csv")
+bikes <- read.csv("data/bikesharing/bikes.csv")
 # here is where you write your code for question #1
 ```
 

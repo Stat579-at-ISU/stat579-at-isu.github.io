@@ -66,6 +66,4 @@ Implement your transformation. For your convenience: 1 ft equals 30.48 cm, 1 inc
 
 8. Use `ggplot2` to draw a scatterplot of weight (`WTKG3`) by height (new `height` variable). Facet by gender and comment.
 
-Due date: the homework is due a week from now on Tuesday. 
-
 For the submission: submit your solution in an R Markdown file and (just for insurance) submit the corresponding html/word file with it. 

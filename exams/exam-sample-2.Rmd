@@ -9,7 +9,7 @@ knitr::opts_chunk$set(echo = TRUE)
 ```
 
 The United States Geological Survey continuously monitors earth quakes and makes the corresponding data available to the public. 
-A dataset containing all worldwide earth quakes  for a time frame of 30 days is available at <a href="http://www.hofroe.net/data/earthquakes.csv">http://www.hofroe.net/data/earthquakes.csv</a>.
+A dataset containing all worldwide earth quakes  for a time frame of 30 days is available at <a href="https://raw.githubusercontent.com/Stat579-at-ISU/stat579-at-isu.github.io/master/exams/data/earthquakes.csv">https://raw.githubusercontent.com/Stat579-at-ISU/stat579-at-isu.github.io/master/exams/data/earthquakes.csv</a>.
 
 You can find the accompanying codebook at <a href="http://earthquake.usgs.gov/earthquakes/feed/v1.0/csv.php">US Geology Survey</a> (you should be able to answer all questions in this exam without the codebook). 
 

@@ -12,15 +12,15 @@ For all of the questions below incorporate  the necessary R code directly into y
 
 The Behavioral Risk Factor Surveillance System (BRFSS) is an annual survey provided by the Center for Disease Control (CDC) to assess behavioral and chronic diseases. The center surveys six individual-level behavioral health risk factors associated with the leading causes of premature mortality and morbidity among adults: 1) cigarette smoking, 2) alcohol use, 3) physical activity, 4) diet, 5) hypertension, and 6) safety belt use. 
 
-A subset of the data concentrating on Iowa with records for 2012 is given at http://www.hofroe.net/data/iowa-brfss-2012.csv
+A subset of the data concentrating on Iowa with records for 2012 is given at https://raw.githubusercontent.com/Stat579-at-ISU/stat579-at-isu.github.io/master/exams/data/iowa-brfss-2012.csv
 
 A codebook describing the survey and a listing of all variables is available at http://www.cdc.gov/brfss/annual_data/2012/pdf/CODEBOOK12_LLCP.pdf.
 You should be able to answer all of the following questions without  the help of the codebook.
 
 1. Read the data into your R session. How many records are in the data set, how many variables?
 
-```{r}
-iowa <- read.csv("http://www.hofroe.net/data/iowa-brfss-2012.csv")
+```{r cache=FALSE}
+iowa <- read.csv("https://raw.githubusercontent.com/Stat579-at-ISU/stat579-at-isu.github.io/master/exams/data/iowa-brfss-2012.csv")
 # your code goes here
 ```
 

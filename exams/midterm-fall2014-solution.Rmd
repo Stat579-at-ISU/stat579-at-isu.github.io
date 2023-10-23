@@ -14,9 +14,9 @@ You will be asked questions about this dataset. For all of your answers provide 
 Question 1
 ---
 
-Load the data at <a href="http://www.hofroe.net/stat579/bikesharing/bikes.csv">http://www.hofroe.net/stat579/bikesharing/bikes.csv</a> into your R session. The dataset contains data for each trip. How many trips were there overall? How many factor variables are in the data, how many others (describe which ones)?
+Load the data at <a href="https://raw.githubusercontent.com/Stat579-at-ISU/stat579-at-isu.github.io/master/exams/data/bikesharing/bikes.csv">https://raw.githubusercontent.com/Stat579-at-ISU/stat579-at-isu.github.io/master/exams/data/bikesharing/bikes.csv</a> into your R session. The dataset contains data for each trip. How many trips were there overall? How many factor variables are in the data, how many others (describe which ones)?
 ```{r}
-bikes <- read.csv("http://www.hofroe.net/stat579/bikesharing/bikes.csv")
+bikes <- read.csv("https://raw.githubusercontent.com/Stat579-at-ISU/stat579-at-isu.github.io/master/exams/data/bikesharing/bikes.csv")
 nrow(bikes)
 str(bikes)
 #
@@ -54,10 +54,12 @@ Question 4
 
 Plot barcharts of the number of trips on each day of the week, facet by Subscriber.Type. Make sure that the days of the week are in the usual order (start with Mondays). Describe any patterns you see in one to two sentences.
 Introduce a new variable 'weekend' into the data set  that is TRUE for all Saturdays and Sundays and FALSE for all other days of the week. Draw the same plot as before but substitute 'wday' by 'weekend'. Describe the pattern. 
-```{r}
+```{r message = FALSE}
 bikes$wday <- factor(bikes$wday, levels=c("Mon", "Tues", "Wed", "Thurs", "Fri", "Sat", "Sun"))
-library(ggplot2)
-qplot(wday, facets=~Subscriber.Type, data=bikes)
+library(tidyverse)
+bikes %>% 
+  ggplot(aes(x = wday)) + facet_grid(~Subscriber.Type)
+
 # more trips by registered users than casual; casual use more on weekends, registered use more on weekdays
 bikes$weekend <- FALSE
 bikes$weekend[bikes$wday %in% c("Sat", "Sun")] <- TRUE

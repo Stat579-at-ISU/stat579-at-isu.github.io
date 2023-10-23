@@ -9,7 +9,7 @@ knitr::opts_chunk$set(echo = TRUE)
 ```
 
 The United States Geological Survey continuously monitors earth quakes and makes the corresponding data available to the public. 
-A dataset containing all worldwide earth quakes  for a time frame of 30 days is available at <a href="http://www.hofroe.net/data/earthquakes.csv">http://www.hofroe.net/data/earthquakes.csv</a>.
+A dataset containing all worldwide earth quakes  for a time frame of 30 days is available at <a href="https://raw.githubusercontent.com/Stat579-at-ISU/stat579-at-isu.github.io/master/exams/data/earthquakes.csv">https://raw.githubusercontent.com/Stat579-at-ISU/stat579-at-isu.github.io/master/exams/data/earthquakes.csv</a>.
 
 You can find the accompanying codebook at <a href="http://earthquake.usgs.gov/earthquakes/feed/v1.0/csv.php">US Geology Survey</a> (you should be able to answer all questions in this exam without the codebook). 
 
@@ -17,7 +17,7 @@ You can find the accompanying codebook at <a href="http://earthquake.usgs.gov/ea
 When and where was the strongest earthquake? What was its magnitude?
 
 ```{r}
-eq <- read.csv("http://www.hofroe.net/data/earthquakes.csv")
+eq <- read.csv("https://raw.githubusercontent.com/Stat579-at-ISU/stat579-at-isu.github.io/master/exams/data/earthquakes.csv")
 
 # time frame:
 eq$Date <- lubridate::ymd(eq$Date)
@@ -38,9 +38,14 @@ max(eq$Magnitude)
 #[1] 7.3
 ```
 
-2. The variable 'Country' contains country names or states (in the case of the US). California is listed both as 'CA' and as 'California'. Convert all elements in the variable from 'CA' to "California'. 
+2. The variable 'Country' contains country names or states (in the case of the US). Make the variable a factor variable. California is listed both as 'CA' and as 'California'. Convert all elements in the variable from 'CA' to "California'. 
 
 ```{r}
+library(dplyr)
+
+eq <- eq %>% mutate(
+  Country = factor(Country)
+)
 levels(eq$Country)[11] <- "California"
 sort(table(eq$Country), decreasing=TRUE)[1:5]
 #            California                 Alaska British Virgin Islands 
@@ -54,25 +59,32 @@ sort(table(eq$Country), decreasing=TRUE)[1:5]
 Using ggplot2, create a barchart of country, sort by frequency of earthquakes. 	<br>
 Make sure that labels are readable in the barchart.
 
-```{r}
+```{r fig.height=10}
 library(ggplot2)
-library(dplyr)
+library(forcats)
 
 eq %>% mutate(
-  Country = reorder(Country, Country, length)) %>%
+  Country = fct_infreq(Country)) %>%
   ggplot(aes(x = Country)) + geom_bar() + coord_flip()
 ```
 
 4. Create a new variable 'Country10' in the earthquake data that contains the country names  for the  ten countries/states with the highest number of earthquakes, and combines all other records in a category 'Other'. <br>
 Show (using the ggplot2 package) boxplots of magnitude by country. Make sure to sort countries from lowest to highest median magnitude.
 
-```{r}
-top10 <- names(sort(table(eq$Country), decreasing = TRUE))[1:10]
-eq$Country10 <- top10[with(eq, match(Country, top10))]
-eq$Country10[is.na(eq$Country10)] <- "Other"
+```{r }
+# idea: create a table of earth quake frequency by country
+# get the names of the top ten countries
+top10 <- eq %>% filter(!is.na(Country)) %>% 
+  group_by(Country) %>% tally() %>% slice_max(n, n=10)
+
+# use mutate to include a variable Country10
+eq <- eq %>% mutate(
+  Country10 = ifelse(Country %in% top10$Country, as.character(Country), "Other")
+)
+
 
 eq %>% mutate(
-  Country10 = reorder(Country10, Magnitude, na.rm=TRUE, FUN = median)
+  Country10 = fct_reorder(Country10, Magnitude)
 ) %>%
   ggplot(aes(x = Country10, y = Magnitude)) + geom_boxplot() + coord_flip()
 ```
@@ -81,8 +93,6 @@ eq %>% mutate(
 	Describe the shape of the density. <br>
 	Use the histogram to pick a suitable cutoff between 'small' and 'large' earthquakes. 
 ```{r}
-library(ggplot2)
-
 eq %>% ggplot(aes(x = Magnitude)) + geom_histogram(binwidth = 0.1)
 # let's use 4 as the cutoff between 'small' and 'large' earth quakes
 

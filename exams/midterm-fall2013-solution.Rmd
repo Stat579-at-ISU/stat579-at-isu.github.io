@@ -12,7 +12,7 @@ For all of the questions below incorporate  the necessary R code directly into y
 
 The Behavioral Risk Factor Surveillance System (BRFSS) is an annual survey provided by the Center for Disease Control (CDC) to assess behavioral and chronic diseases. The center surveys six individual-level behavioral health risk factors associated with the leading causes of premature mortality and morbidity among adults: 1) cigarette smoking, 2) alcohol use, 3) physical activity, 4) diet, 5) hypertension, and 6) safety belt use. 
 
-A subset of the data concentrating on Iowa with records for 2012 is given at http://www.hofroe.net/data/iowa-brfss-2012.csv
+A subset of the data concentrating on Iowa with records for 2012 is given at https://raw.githubusercontent.com/Stat579-at-ISU/stat579-at-isu.github.io/master/exams/data/iowa-brfss-2012.csv
 
 A codebook describing the survey and a listing of all variables is available at http://www.cdc.gov/brfss/annual_data/2012/pdf/CODEBOOK12_LLCP.pdf.
 You should be able to answer all of the following questions without  the help of the codebook.
@@ -20,7 +20,7 @@ You should be able to answer all of the following questions without  the help of
 1. Read the data into your R session. How many records are in the data set, how many variables?
 
 ```{r}
-iowa <- read.csv("http://www.hofroe.net/data/iowa-brfss-2012.csv")
+iowa <- read.csv("https://raw.githubusercontent.com/Stat579-at-ISU/stat579-at-isu.github.io/master/exams/data/iowa-brfss-2012.csv")
 
 library(ggplot2)
 library(dplyr)
@@ -134,14 +134,22 @@ dframe %>%
   ggplot(aes(x = AGE, y =dui,  colour=factor(SEX), size = n)) +
            geom_point() +
            facet_grid(~SEX)
+# it seems that with increasing age the percentage of dui events goes down;
+# women seem to have lower dui percentages than men
+# the visual (and the data) are not ideal, because there is not enough data
+# to create reliable rates for dui for each year of age. It would be more informative 
+# to create age groups and calculate dui percentages
   
 dframe %>% 
   ggplot(aes(x = noexer, y = poor, 
-             colour=factor(SEX), size = n)) +
-  geom_point() + 
+             colour=factor(SEX))) +
+  geom_point(aes(size = n)) + 
   geom_smooth(method = "lm") +
              facet_grid(~SEX)
-# don't forget to write comments 
+# What we see are moderately strong positive relationships between no exercise and poor health
+# the visual (and the data) are not ideal, because there is not enough data
+# to create reliable rates for each year of age and sex. It would be more informative 
+# to create age groups and re-calculate the percentages
 ```  
 
 
@@ -174,7 +182,7 @@ This creates an object m1 in your R session. Investigate the object, find out if
 ```{r}
 # use function str() on m1:
 m1 <- glm(DRNKDRI2 > 0 ~ AGE, data=iowa, family=binomial(logit))
-str(m1)
-
+# str(m1) # too much output to show sensibly
+names(m1)
 m1$aic
 ```

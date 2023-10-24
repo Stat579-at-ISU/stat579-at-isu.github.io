@@ -15,11 +15,11 @@ Question 1
 ---
 
 Load the data at <a href="https://raw.githubusercontent.com/Stat579-at-ISU/stat579-at-isu.github.io/master/exams/data/bikesharing/bikes.csv">https://raw.githubusercontent.com/Stat579-at-ISU/stat579-at-isu.github.io/master/exams/data/bikesharing/bikes.csv</a> into your R session. The dataset contains data for each trip. How many trips were there overall? How many factor variables are in the data, how many others (describe which ones)?
-```{r}
+```{r cache=TRUE}
 bikes <- read.csv("https://raw.githubusercontent.com/Stat579-at-ISU/stat579-at-isu.github.io/master/exams/data/bikesharing/bikes.csv")
 nrow(bikes)
 str(bikes)
-#
+# 77186 trips
 ```
 
 Question 2
@@ -39,14 +39,22 @@ Question 3
 
 Start.Station describes the start of each trip. From which station did most trips get started? How many trips?
 Is that the same station at which most trips ended (End.Station)? 
-When a bike is not returned, the End.Station is marked as "". How often do bikes not get returned? WHat is reported for the duration of those trips? Change the value of Duration to NA.
+When a bike is not returned, the End.Station is marked as "". How often do bikes not get returned? What is reported for the duration of those trips? Change the value of Duration to NA.
 
 ```{r}
+library(dplyr)
+bikes %>% count(Start.Station) %>% slice_max(n, n=3)
+bikes %>% count(End.Station) %>% slice_max(n, n=3)
+
+# same thing using base commands
 sort(table(bikes$Start.Station), decreasing=TRUE)[1:3]
 sort(table(bikes$End.Station), decreasing=TRUE)[1:3]
 
-subset(bikes, End.Station =="")
-bikes$Duration[bikes$End.Station ==""] <- NA
+bikes %>% filter(End.Station =="") %>% nrow()
+bikes %>% filter(End.Station =="")
+bikes <- bikes %>% mutate(
+  Duration = ifelse(End.Station=="", NA, Duration)
+)
 ```
 
 Question 4
@@ -58,13 +66,25 @@ Introduce a new variable 'weekend' into the data set  that is TRUE for all Satur
 bikes$wday <- factor(bikes$wday, levels=c("Mon", "Tues", "Wed", "Thurs", "Fri", "Sat", "Sun"))
 library(tidyverse)
 bikes %>% 
-  ggplot(aes(x = wday)) + facet_grid(~Subscriber.Type)
+  ggplot(aes(x = wday)) + 
+  geom_bar() +
+  facet_grid(~Subscriber.Type)
 
 # more trips by registered users than casual; casual use more on weekends, registered use more on weekdays
-bikes$weekend <- FALSE
-bikes$weekend[bikes$wday %in% c("Sat", "Sun")] <- TRUE
-qplot(weekend, facets=~Subscriber.Type, data=bikes)
-# casual users have more/almost the same number of trips on weekends than/as on weekdays, even though the weekend is just two days.
+bikes <- bikes %>% mutate(
+  weekend = wday %in% c("Sat", "Sun")
+)
+
+# same thing as above
+# wday bikes$weekend <- FALSE
+# bikes$weekend[bikes$wday %in% c("Sat", "Sun")] <- TRUE
+
+bikes %>% 
+  ggplot(aes(x = weekend)) + 
+  geom_bar() + 
+  facet_grid(~Subscriber.Type)
+
+# casual users have almost the same number of trips on weekends as on weekdays, even though the weekend is just two days.
 ```
 
 Question 5
@@ -77,9 +97,13 @@ sum(subset(bikes, Subscriber.Type=="Casual")$free, na.rm=T)/nrow(subset(bikes, S
 
 sum(subset(bikes, Subscriber.Type=="Registered")$free, na.rm=T)/nrow(subset(bikes, Subscriber.Type=="Registered"))*100
 
-qplot(Subscriber.Type, fill=free, data=bikes) # or, better, but we haven't really talked about it:
-qplot(Subscriber.Type, fill=free, data=bikes, position="fill")
+bikes %>% 
+  ggplot(aes(x = Subscriber.Type, fill=free)) +
+  geom_bar()
 
+bikes %>% 
+  ggplot(aes(x = Subscriber.Type, fill=free)) +
+  geom_bar(position="fill")
 ```
 
 
@@ -105,12 +129,16 @@ bike.summary <- bikes %>%
     sdlength=sd(Duration/60, na.rm=T)
   )
 
-qplot(hour, length, facets=~Subscriber.Type, data=bike.summary, size=sdlength)
+bike.summary %>% 
+  ggplot(aes(x = length, y = sdlength, size = n)) +
+  geom_point() + facet_grid(~Subscriber.Type)
+
+# subscribers have lots of short trips (almost all < 20 mins), casual renters have trips between 20 mins and 60 mins on average. With increasing average length the variability increases.
 ```
 
 #### Question 7
 
-Write a function ```moment (x,k, na.rm=F)``` to calculate the kth moment $m_k$ of sample x as given in
+Write a function ```moment (x,k, na.rm=F)``` to calculate the (central) kth moment $m_k$ of sample x as given in
 $m_k = 1/n \cdot \sum_i (x_i - \mu)^k$,
 where $\mu$ is the sample mean of numeric vector x and $n$ is its length.
 
@@ -124,7 +152,7 @@ Construct a dataset for all combinations of ```Start.Station``` and ```End.Stati
 3) the second moment of the durations 
 4) the third moment of the durations 
 
-Skewness $\gamma$ of a distribution is defined as the ration of third moment divided by the second moment raised to the power of 1.5, i.e. 
+Skewness $\gamma$ of a distribution is defined as the ratio of the third moment divided by the second moment raised to the power of 1.5, i.e. 
 \[
 \gamma = \frac{m_3}{m_2^1.5}.
 \]
@@ -134,11 +162,11 @@ For between station summaries that are based on at least 50 trips, plot the diff
 # your code goes here
 moment <- function (x, k, na.rm=FALSE) {
   if (na.rm==T) {
-    x <- is.na(x)
+    x <- na.omit(x)
   }
   n <- length(x)
   mu <- mean(x)
-  res <- sum( (x-mu)^k )/n
+  res <- sum( 1/n*(x - mu)^k )
   
   return(res)
 }
@@ -154,8 +182,10 @@ between.stations <- bikes %>%
   third=moment(Duration, 3, na.rm=T)
   )
   
-#qplot(median-mean, third/second^(2/3), data=subset(between.stations, n > 50))
-
+between.stations %>% 
+  filter( n > 50) %>% 
+  ggplot(aes(x = median-mean, y = third/second^(2/3))) +
+  geom_point()
 ```
 Replace this text by your answer.
 

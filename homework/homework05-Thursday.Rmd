@@ -1,0 +1,41 @@
+---
+title: "Homework 5 - Thursday "
+author: "Your Name"
+output: html_document
+---
+
+---
+title: "Homework 5 - Thursday "
+author: "Your Name"
+output: html_document
+---
+
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+## Weight of Chicks
+
+For this exercise we will use the data set `ChickWeight`. This is one of the data sets that comes with base R. Make sure to read up on it and its variables with `?ChickWeight`. 
+
+### Mutate or summarize? 
+
+1. Each chick should have twelve weight measurements. Use the `dplyr` package to identify how many chicks have a complete set of weight measurements and how many measurements there are in the incomplete cases. Extract a subset of the data for all chicks with complete information and name the data set `complete`. (Hint: introduce a helper variable consisting of the number of observations)  
+
+2. In the complete data set introduce a new variable that measures the  weight difference for each chick compared to its day 0 weight. Name this variable `weightgain`.   
+
+
+3.  Using the `ggplot2` package create  side-by-side boxplots of `weightgain` by `Diet` for day 21. Make sure to xhange the order of the categories in the `Diet` variable such that the boxplots are ordered by median `weightgain`.
+Describe the relationship in 2-3 sentences. 
+
+3. Using the `ggplot2` package create a  plot with `Time` along the x axis and `weight` in the y axis. Facet by `Diet`. Use a point layer and also draw one line for each `Chick`. Color by `Diet`.  Include the legend on the bottom (check `theme`).<br>
+Describe the relationship in 2-3 sentences. 
+
+
+4. Select the  `Chick` with the maximum weight at `Time` 21 for each of the diets. Redraw the previous plot with only these 4 chicks (and don't facet).<br>
+Compute average daily weights under each Diet and redraw the plot (using the same structure and aesthetics as before).<br>
+Comment on the results and compare all the visualizations. Which visualization  best captures this data set - and why?
+
+For the submission: submit your solution in an R Markdown file and (just for insurance) submit the corresponding html/word file with it. 
+ 

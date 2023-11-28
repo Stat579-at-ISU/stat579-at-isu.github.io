@@ -1,0 +1,27 @@
+---
+title: "Midterm exam - rework mistakes"
+author: "Your Name"
+output: html_document
+---
+
+---
+title: "Midterm exam - rework mistakes"
+author: "Your Name"
+output: html_document
+---
+
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+## Rework mistakes on the midterm
+
+
+Download the materials for your midterm, check the feedback to your exam submission on Canvas and address all involved sections. 
+
+For corrected items you will get up to 50% of the subtracted points back. 
+
+
+For the submission: submit your exam solution in an R Markdown file and (just for insurance) submit the corresponding html/word file with it. 
+ 

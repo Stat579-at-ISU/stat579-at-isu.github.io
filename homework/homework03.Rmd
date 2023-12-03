@@ -62,15 +62,84 @@ It turns out, that the following coding scheme is used for HEIGHT3:
 6. Use a combination of `filter` and logical expressions to answer the following questions:
 
   a. What proportion of the height measurements are taken in metric measurements? 
+  
+```{r}
+metric <- iowa %>% filter(HEIGHT3 > 9000, HEIGHT3 < 9999)
+metric %>% nrow()
+iowa %>% filter(HEIGHT3 !=9999, HEIGHT3 != 7777, HEIGHT3 !="") %>% nrow()
+
+167/8526
+
+```
+  
   b. What is the range of (standard) height measurements for men, what is the range of (standard) height measurements for women? Draw histograms of (standard) height, facet by gender. Make sure to choose an appropriate bin width. Comment on the histograms and your choice of bin width.
+  
+```{r}
+
+iowa <- iowa %>% mutate(
+  HEIGHT3 = ifelse(HEIGHT3 %in% c(7777, 9999), NA, HEIGHT3)
+)
+iowa %>% 
+  filter(HEIGHT3 < 9000) %>%
+  group_by(SEXVAR) %>% 
+  summarize(
+    height_min = min(HEIGHT3, na.rm=TRUE),
+    height_max = max(HEIGHT3, na.rm=TRUE)
+  )
+
+
+iowa %>% 
+  filter(HEIGHT3 < 9000) %>%
+  ggplot(aes(x = HEIGHT3)) + geom_histogram(binwidth=100) +
+  facet_grid(SEXVAR~.)
+```
+  
   c. How many missing values (?`is.na`) does the variable HEIGHT3 have?
+  
+```{r}
+iowa %>% filter(is.na(HEIGHT3)) %>% nrow()
+
+sum(is.na(iowa$HEIGHT3))
+```
 
 7. Fact finding - you might have to make use of the [codebook](https://www.cdc.gov/brfss/annual_data/2022/zip/codebook22_llcp-v2-508.zip) to answer the following questions, if you use the codebook, please include this in a comment in your answer. For all answers, include the code you used to get to the answer.
 
   a. What is the mode of the number of adults (`NUMADULT`) in a household in Iowa in 2022?
+  
+```{r}
+iowa %>% count(NUMADULT)
+
+iowa %>% group_by(NUMADULT) %>% summarize(n = n())
+iowa %>% group_by(NUMADULT) %>% tally()
+
+```
+  
   b. `EDUCA` is the variable containing the highest grade or year of school completed. Is the percentage of college graduates in Iowa higher or lower than the nation's average (based on the BRFSS sample)? 
+  
+```{r}
+iowa %>% count(EDUCA)
+
+2927/nrow(iowa) *100
+```
+  
   c. Out of the people asked, what percentage of people got their flu shot (`FLSHTMY3`)  in July 2022 or after?
     
+```{r}
+
+iowa %>% count(FLSHTMY3)
+
+iowa <- iowa %>% 
+  mutate(
+    FLSHTMY3 = ifelse(FLSHTMY3 %in% c(777777, 999999), NA, FLSHTMY3),
+  flu_year = FLSHTMY3 %% 10000,
+  flu_month = FLSHTMY3 %/% 10000,
+  later = (flu_year == 2022) & (flu_month >= 7)
+)
+
+iowa %>% group_by(later) %>% tally()
+
+947/nrow(iowa)*100
+```
 
 
 For the submission: submit your solution in an R Markdown file and (just for insurance) submit the corresponding html/word file with it. 
